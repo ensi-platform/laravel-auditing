@@ -17,16 +17,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | User Morph prefix & Guards
+    | User Guards
     |--------------------------------------------------------------------------
     |
-    | Define the morph prefix and authentication guards for the User resolver.
+    | Define authentication guards for the User resolver.
     |
     */
 
     'user' => [
-        'morph_prefix' => 'subject',
-        'guards'       => [],
+        'guards' => [],
     ],
 
     /*

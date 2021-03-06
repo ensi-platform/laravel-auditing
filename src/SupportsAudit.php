@@ -288,8 +288,6 @@ trait SupportsAudit
             $state = $this->modifyAttributeValues($state);
         }
 
-        $morphPrefix = Config::get('ensi-audit.user.morph_prefix', 'user');
-
         $tags = implode(',', $this->generateTags());
 
         $user = $this->resolveUser();
