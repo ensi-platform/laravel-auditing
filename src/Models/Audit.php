@@ -2,6 +2,7 @@
 
 namespace Ensi\LaravelEnsiAudit\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -52,4 +53,15 @@ class Audit extends Model implements \Ensi\LaravelEnsiAudit\Contracts\Audit
         // Note: Please do not add 'auditable_id' in here, as it will break non-integer PK models
         'state'        => 'json',
     ];
+
+    protected $dates = ['transaction_time'];
+
+    /** @var string Формат дат для БД с точностью до микросекунд */
+    protected $dateFormat = 'Y-m-d H:i:s.u';
+
+    public function scopeForRoot(Builder $query, Model $root): Builder
+    {
+        return $query->where('root_entity_type', $root->getMorphClass())
+            ->where('root_entity_id', $root->getKey());
+    }
 }

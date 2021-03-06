@@ -3,6 +3,8 @@
 namespace Ensi\LaravelEnsiAudit;
 
 use DateTimeInterface;
+use Ensi\LaravelEnsiAudit\Contracts\Principal;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\Model;
@@ -31,20 +33,19 @@ trait Audit
      */
     protected $modified = [];
 
-    /**
-     * {@inheritdoc}
-     */
-    public function auditable()
+    public function auditable(): MorphTo
     {
         return $this->morphTo();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function user()
+    public function subject(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    public function root(): MorphTo
+    {
+        return $this->morphTo('root_entity');
     }
 
     /**
@@ -68,26 +69,27 @@ trait Audit
      */
     public function resolveData(): array
     {
-        $morphPrefix = Config::get('ensi-audit.user.morph_prefix', 'user');
-
         // Metadata
         $this->data = [
-            'audit_id'         => $this->id,
-            'audit_event'      => $this->event,
-            'audit_url'        => $this->url,
-            'audit_ip_address' => $this->ip_address,
-            'audit_user_agent' => $this->user_agent,
-            'audit_tags'       => $this->tags,
-            'audit_created_at' => $this->serializeDate($this->created_at),
-            'audit_updated_at' => $this->serializeDate($this->updated_at),
-            'user_id'          => $this->getAttribute($morphPrefix.'_id'),
-            'user_type'        => $this->getAttribute($morphPrefix.'_type'),
+            'audit_id'          => $this->id,
+            'audit_event'       => $this->event,
+            'audit_url'         => $this->url,
+            'audit_ip_address'  => $this->ip_address,
+            'audit_user_agent'  => $this->user_agent,
+            'audit_tags'        => $this->tags,
+            'audit_created_at'  => $this->serializeDate($this->created_at),
+            'audit_updated_at'  => $this->serializeDate($this->updated_at),
+            'root_entity_id'    => $this->getAttribute('root_entity_type'),
+            'root_entity_type'  => $this->getAttribute('root_entity_id'),
+            'subject_id'        => $this->getAttribute('subject_id'),
+            'subject_type'      => $this->getAttribute('subject_type'),
+            'transaction_uid'   => $this->getAttribute('transaction_uid'),
+            'transaction_time'  => $this->serializeDate($this->transaction_time),
         ];
 
-        if ($this->user) {
-            foreach ($this->user->getArrayableAttributes() as $attribute => $value) {
-                $this->data['user_'.$attribute] = $value;
-            }
+        if ($this->subject && ($this->subject instanceof Principal)) {
+            $this->data['subject_name'] = $this->subject->getName();
+            $this->data['user_id'] = $this->subject->getUserIdentifier();
         }
 
         $this->metadata = array_keys($this->data);
@@ -141,14 +143,14 @@ trait Audit
     public function getDataValue(string $key)
     {
         if (!array_key_exists($key, $this->data)) {
-            return;
+            return null;
         }
 
         $value = $this->data[$key];
 
         // User value
-        if ($this->user && Str::startsWith($key, 'user_')) {
-            return $this->getFormattedValue($this->user, substr($key, 5), $value);
+        if ($this->subject && Str::startsWith($key, 'subject_')) {
+            return $this->getFormattedValue($this->subject, substr($key, 5), $value);
         }
 
         // Auditable value

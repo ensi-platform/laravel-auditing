@@ -30,7 +30,7 @@ interface Audit
      *
      * @return mixed
      */
-    public function user();
+    public function subject();
 
     /**
      * Audit data resolver.
