@@ -16,6 +16,12 @@ interface Principal
     public function getAuthIdentifier(): int;
 
     /**
+     * Возвращает имя класса для полиморфной связи.
+     * @return string
+     */
+    public function getMorphClass();
+
+    /**
      * Возвращает наименование субъекта доступа.
      * @return string
      */
