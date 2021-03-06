@@ -33,7 +33,7 @@ class CreateAuditsTable extends Migration
             $table->uuid('transaction_uid')->nullable();
             $table->timestamp('transaction_time', 6)->nullable();
 
-            $table->index(['user_id', 'user_type']);
+            $table->index(['subject_id', 'subject_type']);
             $table->index(['transaction_uid', 'created_at']);
         });
     }
