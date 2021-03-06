@@ -44,7 +44,7 @@ trait SupportsAudit
      *
      * @return void
      */
-    public static function bootAuditable()
+    public static function bootSupportsAudit()
     {
         if (!self::$auditingDisabled && static::isAuditingEnabled()) {
             static::observe(new AuditableObserver());
