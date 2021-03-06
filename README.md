@@ -19,6 +19,7 @@ repositories: [
 
 2. `composer require ensi/laravel-ensi-audit`
 3. `php artisan vendor:publish --provider="Ensi\LaravelEnsiAudit\EnsiAuditServiceProvider"`
+4. Добавьте в `config/app` класс провайдера `Ensi\LaravelEnsiAudit\EnsiAuditServiceProvider::class`
 
 ## Использование
 
