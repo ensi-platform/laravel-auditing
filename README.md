@@ -1,4 +1,4 @@
-# Laravel Ensi Filesystem
+# Laravel Ensi Audit
 
 Пакет для работы с историей изменений данных Ensi в Laravel приложениях.
 Основан на owen-it/laravel-auditing.
