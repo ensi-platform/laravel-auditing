@@ -12,3 +12,4 @@ node_modules/
 composer.lock
 npm-debug.log
 package-lock.json
+.phpunit.result.cache

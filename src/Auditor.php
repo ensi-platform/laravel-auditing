@@ -2,14 +2,14 @@
 
 namespace Ensi\LaravelEnsiAudit;
 
-use Illuminate\Support\Manager;
-use InvalidArgumentException;
 use Ensi\LaravelEnsiAudit\Contracts\Auditable;
 use Ensi\LaravelEnsiAudit\Contracts\AuditDriver;
 use Ensi\LaravelEnsiAudit\Drivers\Database;
 use Ensi\LaravelEnsiAudit\Events\Audited;
 use Ensi\LaravelEnsiAudit\Events\Auditing;
 use Ensi\LaravelEnsiAudit\Exceptions\AuditingException;
+use Illuminate\Support\Manager;
+use InvalidArgumentException;
 
 class Auditor extends Manager implements Contracts\Auditor
 {
