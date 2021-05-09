@@ -84,7 +84,7 @@ trait Audit
             'subject_id'        => $this->getAttribute('subject_id'),
             'subject_type'      => $this->getAttribute('subject_type'),
             'transaction_uid'   => $this->getAttribute('transaction_uid'),
-            'transaction_time'  => $this->serializeDate($this->transaction_time),
+            'transaction_time'  => $this->serializeDate($this->transaction_time ?? now()),
         ];
 
         if ($this->subject && ($this->subject instanceof Principal)) {

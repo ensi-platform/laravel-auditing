@@ -10,6 +10,9 @@ use Ensi\LaravelEnsiAudit\Facades\Subject;
 use Ensi\LaravelEnsiAudit\Facades\Transaction;
 use Ensi\LaravelEnsiAudit\Resolvers\SubjectManager;
 use Ensi\LaravelEnsiAudit\Transactions\ExtendedTransactionManager;
+use Ensi\LaravelEnsiAudit\Transactions\TransactionListener;
+use Illuminate\Database\Events\TransactionBeginning;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
 class EnsiAuditServiceProvider extends ServiceProvider
@@ -22,6 +25,8 @@ class EnsiAuditServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPublishing();
+        $this->registerListeners();
+
         $this->mergeConfigFrom(__DIR__.'/../config/ensi-audit.php', 'ensi-audit');
     }
 
@@ -85,5 +90,10 @@ class EnsiAuditServiceProvider extends ServiceProvider
             Subject::class,
             Transaction::class,
         ];
+    }
+
+    private function registerListeners(): void
+    {
+        Event::listen(TransactionBeginning::class, [TransactionListener::class, 'onBegin']);
     }
 }
