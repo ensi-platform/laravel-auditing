@@ -2,15 +2,14 @@
 
 namespace Ensi\LaravelEnsiAudit\Tests\Models;
 
+use Ensi\LaravelEnsiAudit\Contracts\Auditable;
+use Ensi\LaravelEnsiAudit\Contracts\Principal;
 use Ensi\LaravelEnsiAudit\Database\Factories\UserFactory;
 use Ensi\LaravelEnsiAudit\SupportsAudit;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
-use Ensi\LaravelEnsiAudit\Contracts\Auditable;
 
-class User extends Model implements Auditable, Authenticatable
+class User extends Model implements Auditable, Principal
 {
-    use \Illuminate\Auth\Authenticatable;
     use SupportsAudit;
 
     /**
@@ -30,6 +29,21 @@ class User extends Model implements Auditable, Authenticatable
     public function getFirstNameAttribute(string $value): string
     {
         return ucfirst($value);
+    }
+
+    public function getName(): string
+    {
+        return $this->first_name;
+    }
+
+    public function getUserIdentifier(): ?int
+    {
+        return $this->getKey();
+    }
+
+    public function getAuthIdentifier(): int
+    {
+        return $this->getKey();
     }
 
     public static function factory(): UserFactory

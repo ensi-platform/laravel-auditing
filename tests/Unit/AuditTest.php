@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use DateTimeInterface;
 use Ensi\LaravelEnsiAudit\Database\Factories\AuditFactory;
 use Ensi\LaravelEnsiAudit\Encoders\Base64Encoder;
+use Ensi\LaravelEnsiAudit\Facades\Subject;
 use Ensi\LaravelEnsiAudit\Redactors\LeftRedactor;
 use Ensi\LaravelEnsiAudit\Tests\AuditingTestCase;
 use Ensi\LaravelEnsiAudit\Tests\Models\Article;
@@ -27,14 +28,12 @@ class AuditTest extends AuditingTestCase
         $now = Carbon::now();
         $article = null;
 
-        DB::transaction(function () use (&$article, $now) {
-            $article = Article::factory()->create([
-                'title'        => 'How To Audit Eloquent Models',
-                'content'      => 'First step: install the laravel-auditing package.',
-                'reviewed'     => 1,
-                'published_at' => $now,
-            ]);
-        });
+        $article = Article::factory()->create([
+            'title'        => 'How To Audit Eloquent Models',
+            'content'      => 'First step: install the laravel-auditing package.',
+            'reviewed'     => 1,
+            'published_at' => $now,
+        ]);
 
         $audit = $article->audits()->first();
 
@@ -60,7 +59,7 @@ class AuditTest extends AuditingTestCase
      * @group Audit::resolveData
      * @test
      */
-    public function itResolvesAuditDataIncludingUserAttributes()
+    public function itResolvesAuditDataIncludingSubjectAttributes()
     {
         $now = Carbon::now();
 
@@ -71,7 +70,7 @@ class AuditTest extends AuditingTestCase
             'email'      => 'rick@wubba-lubba-dub.dub',
         ]);
 
-        $this->actingAs($user);
+        Subject::attach($user);
 
         $article = Article::factory()->create([
             'title'        => 'How To Audit Eloquent Models',
@@ -82,7 +81,7 @@ class AuditTest extends AuditingTestCase
 
         $audit = $article->audits()->first();
 
-        $this->assertCount(18, $resolvedData = $audit->resolveData());
+        $this->assertCount(20, $resolvedData = $audit->resolveData());
 
         Assert::assertArraySubset([
             'audit_id'         => 2,
@@ -97,6 +96,7 @@ class AuditTest extends AuditingTestCase
             'new_content'      => 'First step: install the laravel-auditing package.',
             'new_published_at' => $now->toDateTimeString(),
             'new_reviewed'     => 1,
+            'subject_id'       => (string)$user->getKey(),
         ], $resolvedData, true);
     }
 
@@ -113,8 +113,6 @@ class AuditTest extends AuditingTestCase
             'last_name'  => 'Sanchez',
             'email'      => 'rick@wubba-lubba-dub.dub',
         ]);
-
-        $this->actingAs($user);
 
         $audit = Article::factory()->create([
             'title'        => 'How To Audit Eloquent Models',
@@ -168,7 +166,7 @@ class AuditTest extends AuditingTestCase
      * @group Audit::getMetadata
      * @test
      */
-    public function itReturnsAuditMetadataIncludingUserAttributesAsArray()
+    public function itReturnsAuditMetadataIncludingSubjectAttributesAsArray()
     {
         $user = User::factory()->create([
             'is_admin'   => 1,
@@ -177,11 +175,11 @@ class AuditTest extends AuditingTestCase
             'email'      => 'rick@wubba-lubba-dub.dub',
         ]);
 
-        $this->actingAs($user);
+        Subject::attach($user);
 
         $audit = Article::factory()->create()->audits()->first();
 
-        $this->assertCount(14, $metadata = $audit->getMetadata());
+        $this->assertCount(16, $metadata = $audit->getMetadata());
 
         Assert::assertArraySubset([
             'audit_id'         => 2,
@@ -192,6 +190,7 @@ class AuditTest extends AuditingTestCase
             'audit_tags'       => null,
             'audit_created_at' => $audit->created_at->toJSON(),
             'audit_updated_at' => $audit->updated_at->toJSON(),
+            'subject_id'       => (string)$user->getKey(),
         ], $metadata, true);
     }
 
@@ -234,7 +233,7 @@ EOF;
      * @group Audit::getMetadata
      * @test
      */
-    public function itReturnsAuditMetadataIncludingUserAttributesAsJsonString()
+    public function itReturnsAuditMetadataIncludingSubjectAttributesAsJsonString()
     {
         $user = User::factory()->create([
             'is_admin'   => 1,
@@ -243,7 +242,7 @@ EOF;
             'email'      => 'rick@wubba-lubba-dub.dub',
         ]);
 
-        $this->actingAs($user);
+        Subject::attach($user);
 
         $this->travel(-1)->minutes();
         $now = now()->toJSON();
@@ -268,7 +267,9 @@ EOF;
     "subject_id": "$userId",
     "subject_type": "Ensi\\\\LaravelEnsiAudit\\\\Tests\\\\Models\\\\User",
     "transaction_uid": null,
-    "transaction_time": "$now"
+    "transaction_time": "$now",
+    "subject_name": "Rick",
+    "user_id": $userId
 }
 EOF;
 

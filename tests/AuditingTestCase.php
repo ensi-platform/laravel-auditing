@@ -2,12 +2,12 @@
 
 namespace Ensi\LaravelEnsiAudit\Tests;
 
-use Orchestra\Testbench\TestCase;
 use Ensi\LaravelEnsiAudit\EnsiAuditServiceProvider;
+use Ensi\LaravelEnsiAudit\Facades\Subject;
 use Ensi\LaravelEnsiAudit\Resolvers\IpAddressResolver;
 use Ensi\LaravelEnsiAudit\Resolvers\UrlResolver;
 use Ensi\LaravelEnsiAudit\Resolvers\UserAgentResolver;
-use Ensi\LaravelEnsiAudit\Resolvers\UserResolver;
+use Orchestra\Testbench\TestCase;
 
 class AuditingTestCase extends TestCase
 {
@@ -31,7 +31,7 @@ class AuditingTestCase extends TestCase
             'web',
             'api',
         ]);
-        $app['config']->set('ensi-audit.resolver.user', UserResolver::class);
+        $app['config']->set('ensi-audit.resolver.user', Subject::class);
         $app['config']->set('ensi-audit.resolver.url', UrlResolver::class);
         $app['config']->set('ensi-audit.resolver.ip_address', IpAddressResolver::class);
         $app['config']->set('ensi-audit.resolver.user_agent', UserAgentResolver::class);

@@ -2,18 +2,17 @@
 
 namespace Ensi\LaravelEnsiAudit\Drivers;
 
-use Ensi\LaravelEnsiAudit\Transactions\ExtendedTransactionManager;
-use Illuminate\Support\Facades\Config;
 use Ensi\LaravelEnsiAudit\Contracts\Audit;
 use Ensi\LaravelEnsiAudit\Contracts\Auditable;
 use Ensi\LaravelEnsiAudit\Contracts\AuditDriver;
+use Ensi\LaravelEnsiAudit\Transactions\TransactionRegistry;
+use Illuminate\Support\Facades\Config;
 
 class Database implements AuditDriver
 {
-    /** @var ExtendedTransactionManager */
-    private $transaction;
+    private TransactionRegistry $transaction;
 
-    public function __construct(ExtendedTransactionManager $transaction)
+    public function __construct(TransactionRegistry $transaction)
     {
         $this->transaction = $transaction;
     }

@@ -8,6 +8,7 @@ use Ensi\LaravelEnsiAudit\Database\Factories\AuditFactory;
 use Ensi\LaravelEnsiAudit\Encoders\Base64Encoder;
 use Ensi\LaravelEnsiAudit\Exceptions\AuditableTransitionException;
 use Ensi\LaravelEnsiAudit\Exceptions\AuditingException;
+use Ensi\LaravelEnsiAudit\Facades\Subject;
 use Ensi\LaravelEnsiAudit\Models\Audit;
 use Ensi\LaravelEnsiAudit\Redactors\LeftRedactor;
 use Ensi\LaravelEnsiAudit\Redactors\RightRedactor;
@@ -426,28 +427,10 @@ class AuditableTest extends AuditingTestCase
      * @group Auditable::setAuditEvent
      * @group Auditable::toAudit
      * @test
-     *
-     * @dataProvider userResolverProvider
-     *
-     * @param string $guard
-     * @param string $driver
-     * @param int    $id
-     * @param string $type
      */
-    public function itReturnsTheAuditDataIncludingUserAttributes(
-        string $guard,
-        string $driver,
-        int $id = null,
-        string $type = null
-    ) {
-        $this->app['config']->set('ensi-audit.user.guards', [
-            $guard,
-        ]);
-
+    public function itReturnsTheAuditDataIncludingSubjectAttributes() {
         $user = User::factory()->create();
-
-        $this->actingAs($user, $driver);
-
+        Subject::attach($user);
         $now = Carbon::now();
 
         $model = Article::factory()->make([
@@ -472,46 +455,13 @@ class AuditableTest extends AuditingTestCase
             'event'          => 'created',
             'auditable_id'   => null,
             'auditable_type' => Article::class,
-            'subject_id'        => $id,
-            'subject_type'      => $type,
+            'subject_id'     => $user->getKey(),
+            'subject_type'   => User::class,
             'url'            => 'console',
             'ip_address'     => '127.0.0.1',
             'user_agent'     => 'Symfony',
             'tags'           => null,
         ], $auditData, true);
-    }
-
-    /**
-     * @return array
-     */
-    public function userResolverProvider(): array
-    {
-        return [
-            [
-                'api',
-                'web',
-                null,
-                null,
-            ],
-            [
-                'web',
-                'api',
-                null,
-                null,
-            ],
-            [
-                'api',
-                'api',
-                1,
-                User::class,
-            ],
-            [
-                'web',
-                'web',
-                1,
-                User::class,
-            ],
-        ];
     }
 
     /**
