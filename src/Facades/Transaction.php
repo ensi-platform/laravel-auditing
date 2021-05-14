@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Facade;
 /**
  * Transaction обеспечивает доступ к атрибутам текущей транзакции.
  *
- * @method static \Ensi\LaravelEnsiAudit\Transactions\TransactionAttributes attributes(string $connectionName=null)
+ * @method static \Ensi\LaravelEnsiAudit\Contracts\TransactionAttributes attributes(string $connectionName=null)
  * @method static bool isActive()
  * @method static \Carbon\CarbonInterface timestamp()
  * @method static \Ramsey\Uuid\UuidInterface uid()

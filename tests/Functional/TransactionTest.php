@@ -39,6 +39,9 @@ class TransactionTest extends AuditingTestCase
         $this->assertFalse(Transaction::isActive());
     }
 
+    /**
+     * @test
+     */
     public function itHandlesRollback(): void
     {
         $uid = null;

@@ -49,7 +49,7 @@ class EnsiAuditServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(Database::class, function (Application $app) {
-            return new Database($app[TransactionRegistry::class]);
+            return new Database($app->make(TransactionRegistry::class));
         });
 
 

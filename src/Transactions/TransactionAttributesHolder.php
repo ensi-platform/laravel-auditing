@@ -3,12 +3,13 @@
 namespace Ensi\LaravelEnsiAudit\Transactions;
 
 use Carbon\CarbonInterface;
+use Ensi\LaravelEnsiAudit\Contracts\TransactionAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;
 use Ramsey\Uuid\UuidInterface;
 
-class TransactionHolder implements TransactionAttributes
+class TransactionAttributesHolder implements TransactionAttributes
 {
     public const ATTRIBUTE_UID = 'uid';
     public const ATTRIBUTE_TIMESTAMP = 'timestamp';

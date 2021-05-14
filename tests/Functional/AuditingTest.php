@@ -3,13 +3,17 @@
 namespace Ensi\LaravelEnsiAudit\Tests\Functional;
 
 use Carbon\Carbon;
+use Ensi\LaravelEnsiAudit\Database\Factories\ApiModelFactory;
+use Ensi\LaravelEnsiAudit\Database\Factories\ArticleFactory;
 use Ensi\LaravelEnsiAudit\Events\Auditing;
 use Ensi\LaravelEnsiAudit\Exceptions\AuditingException;
+use Ensi\LaravelEnsiAudit\Facades\Transaction;
 use Ensi\LaravelEnsiAudit\Models\Audit;
 use Ensi\LaravelEnsiAudit\Tests\AuditingTestCase;
 use Ensi\LaravelEnsiAudit\Tests\Models\Article;
 use Ensi\LaravelEnsiAudit\Tests\Models\User;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Testing\Assert;
 use InvalidArgumentException;
@@ -394,5 +398,38 @@ class AuditingTest extends AuditingTestCase
 
         $this->assertSame(2, Audit::count());
         $this->assertSame(3, Article::count());
+    }
+
+    /**
+     * @test
+     */
+    public function itAddsTransactionAttributesToAudit(): void
+    {
+        DB::transaction(function () {
+            /** @var Audit $audit */
+            $audit = ArticleFactory::new()->create()->audits()->first();
+
+            $this->assertEquals($audit->transaction_uid, Transaction::uid()->toString());
+            $this->assertEquals($audit->transaction_time, Transaction::timestamp());
+        });
+    }
+
+    /**
+     * @test
+     */
+    public function itAddsRootEntityToAudit(): void
+    {
+        /** @var Article $article */
+        $article = ArticleFactory::new()->create();
+
+        DB::transaction(function () use ($article) {
+            Transaction::setRootEntity($article);
+
+            /** @var Audit $audit */
+            $audit = ApiModelFactory::new()->create()->audits()->first();
+
+            $this->assertEquals($article->getKey(), $audit->root_entity_id);
+            $this->assertEquals($article->getMorphClass(), $audit->root_entity_type);
+        });
     }
 }

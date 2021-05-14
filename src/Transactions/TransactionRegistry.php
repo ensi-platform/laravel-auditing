@@ -3,6 +3,7 @@
 namespace Ensi\LaravelEnsiAudit\Transactions;
 
 use Carbon\CarbonInterface;
+use Ensi\LaravelEnsiAudit\Contracts\TransactionAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Events\ConnectionEvent;
 use Illuminate\Database\Events\TransactionBeginning;
@@ -71,14 +72,14 @@ class TransactionRegistry
         $this->executeIfTransactionFinished($event, fn($holder) => $holder->rollback());
     }
 
-    private function getOrCreateHolder(string $connectionName): TransactionHolder
+    private function getOrCreateHolder(string $connectionName): TransactionAttributesHolder
     {
         return $this->holders->get($connectionName, fn() => $this->createHolder($connectionName));
     }
 
-    private function createHolder(string $connectionName): TransactionHolder
+    private function createHolder(string $connectionName): TransactionAttributesHolder
     {
-        $holder = new TransactionHolder();
+        $holder = new TransactionAttributesHolder();
         $this->holders->put($connectionName, $holder);
 
         return $holder;

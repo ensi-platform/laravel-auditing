@@ -1,6 +1,6 @@
 <?php
 
-namespace Ensi\LaravelEnsiAudit\Transactions;
+namespace Ensi\LaravelEnsiAudit\Contracts;
 
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
