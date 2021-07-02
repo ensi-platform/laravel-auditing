@@ -24,12 +24,13 @@ repositories: [
 ## Использование
 
 По-умолчанию никакая история изменения для моделей не сохраняется.
-Чтобы включить логирование для конкретной модели надо добавить ей трейт `SupportsAudit`.
+Чтобы включить логирование для конкретной модели надо добавить ей трейт `SupportsAudit` и интерфейс `Auditable`
 
 ```php
+use Ensi\LaravelEnsiAudit\Contracts\Auditable;
 use Ensi\LaravelEnsiAudit\SupportsAudit;
 
-class Something extends Model {
+class Something extends Model implements Auditable {
     use SupportsAudit;
 }
 
