@@ -1,12 +1,12 @@
 <?php
 
-namespace Ensi\LaravelEnsiAudit\Facades;
+namespace Greensight\LaravelAuditing\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static \Ensi\LaravelEnsiAudit\Contracts\AuditDriver auditDriver(\Ensi\LaravelEnsiAudit\Contracts\Auditable $model);
- * @method static void execute(\Ensi\LaravelEnsiAudit\Contracts\Auditable $model);
+ * @method static \Greensight\LaravelAuditing\Contracts\AuditDriver auditDriver(\Greensight\LaravelAuditing\Contracts\Auditable $model);
+ * @method static void execute(\Greensight\LaravelAuditing\Contracts\Auditable $model);
  */
 class Auditor extends Facade
 {
@@ -15,6 +15,6 @@ class Auditor extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return \Ensi\LaravelEnsiAudit\Contracts\Auditor::class;
+        return \Greensight\LaravelAuditing\Contracts\Auditor::class;
     }
 }

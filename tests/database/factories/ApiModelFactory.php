@@ -1,7 +1,7 @@
 <?php
-namespace Ensi\LaravelEnsiAudit\Database\Factories;
+namespace Greensight\LaravelAuditing\Database\Factories;
 
-use Ensi\LaravelEnsiAudit\Tests\Models\ApiModel;
+use Greensight\LaravelAuditing\Tests\Models\ApiModel;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Ramsey\Uuid\Uuid;
 

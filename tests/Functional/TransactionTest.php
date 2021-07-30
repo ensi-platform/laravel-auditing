@@ -1,10 +1,10 @@
 <?php
 
-namespace Ensi\LaravelEnsiAudit\Tests\Functional;
+namespace Greensight\LaravelAuditing\Tests\Functional;
 
-use Ensi\LaravelEnsiAudit\Database\Factories\ArticleFactory;
-use Ensi\LaravelEnsiAudit\Facades\Transaction;
-use Ensi\LaravelEnsiAudit\Tests\AuditingTestCase;
+use Greensight\LaravelAuditing\Database\Factories\ArticleFactory;
+use Greensight\LaravelAuditing\Facades\Transaction;
+use Greensight\LaravelAuditing\Tests\AuditingTestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;

@@ -1,11 +1,11 @@
 <?php
 
-namespace Ensi\LaravelEnsiAudit\Resolvers;
+namespace Greensight\LaravelAuditing\Resolvers;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Request;
 
-class UrlResolver implements \Ensi\LaravelEnsiAudit\Contracts\UrlResolver
+class UrlResolver implements \Greensight\LaravelAuditing\Contracts\UrlResolver
 {
     /**
      * {@inheritdoc}

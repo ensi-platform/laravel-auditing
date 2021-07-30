@@ -1,21 +1,21 @@
 <?php
 
-namespace Ensi\LaravelEnsiAudit\Tests\Unit;
+namespace Greensight\LaravelAuditing\Tests\Unit;
 
 use Carbon\Carbon;
-use Ensi\LaravelEnsiAudit\Contracts\Auditable;
-use Ensi\LaravelEnsiAudit\Database\Factories\AuditFactory;
-use Ensi\LaravelEnsiAudit\Encoders\Base64Encoder;
-use Ensi\LaravelEnsiAudit\Exceptions\AuditableTransitionException;
-use Ensi\LaravelEnsiAudit\Exceptions\AuditingException;
-use Ensi\LaravelEnsiAudit\Facades\Subject;
-use Ensi\LaravelEnsiAudit\Models\Audit;
-use Ensi\LaravelEnsiAudit\Redactors\LeftRedactor;
-use Ensi\LaravelEnsiAudit\Redactors\RightRedactor;
-use Ensi\LaravelEnsiAudit\Tests\AuditingTestCase;
-use Ensi\LaravelEnsiAudit\Tests\Models\ApiModel;
-use Ensi\LaravelEnsiAudit\Tests\Models\Article;
-use Ensi\LaravelEnsiAudit\Tests\Models\User;
+use Greensight\LaravelAuditing\Contracts\Auditable;
+use Greensight\LaravelAuditing\Database\Factories\AuditFactory;
+use Greensight\LaravelAuditing\Encoders\Base64Encoder;
+use Greensight\LaravelAuditing\Exceptions\AuditableTransitionException;
+use Greensight\LaravelAuditing\Exceptions\AuditingException;
+use Greensight\LaravelAuditing\Facades\Subject;
+use Greensight\LaravelAuditing\Models\Audit;
+use Greensight\LaravelAuditing\Redactors\LeftRedactor;
+use Greensight\LaravelAuditing\Redactors\RightRedactor;
+use Greensight\LaravelAuditing\Tests\AuditingTestCase;
+use Greensight\LaravelAuditing\Tests\Models\ApiModel;
+use Greensight\LaravelAuditing\Tests\Models\Article;
+use Greensight\LaravelAuditing\Tests\Models\User;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Testing\Assert;
 use Illuminate\Support\Facades\App;
@@ -41,7 +41,7 @@ class AuditableTest extends AuditingTestCase
      */
     public function itWillNotAuditModelsWhenRunningFromTheConsole()
     {
-        $this->app['config']->set('ensi-audit.console', false);
+        $this->app['config']->set('laravel-auditing.console', false);
 
         $this->assertFalse(Article::isAuditingEnabled());
     }
@@ -52,7 +52,7 @@ class AuditableTest extends AuditingTestCase
      */
     public function itWillAuditModelsWhenRunningFromTheConsole()
     {
-        $this->app['config']->set('ensi-audit.console', true);
+        $this->app['config']->set('laravel-auditing.console', true);
 
         $this->assertTrue(Article::isAuditingEnabled());
     }
@@ -66,7 +66,7 @@ class AuditableTest extends AuditingTestCase
         App::shouldReceive('runningInConsole')
             ->andReturn(false);
 
-        $this->app['config']->set('ensi-audit.console', false);
+        $this->app['config']->set('laravel-auditing.console', false);
 
         $this->assertTrue(Article::isAuditingEnabled());
     }
@@ -152,7 +152,7 @@ class AuditableTest extends AuditingTestCase
      */
     public function itReturnsTheCustomAuditEventsFromConfig()
     {
-        $this->app['config']->set('ensi-audit.events', [
+        $this->app['config']->set('laravel-auditing.events', [
             'published' => 'getPublishedEventAttributes',
             'archived',
         ]);
@@ -317,7 +317,7 @@ class AuditableTest extends AuditingTestCase
         $this->expectException(AuditingException::class);
         $this->expectExceptionMessage('Invalid IpAddressResolver implementation');
 
-        $this->app['config']->set('ensi-audit.resolver.ip_address', null);
+        $this->app['config']->set('laravel-auditing.resolver.ip_address', null);
 
         $model = new Article();
 
@@ -336,7 +336,7 @@ class AuditableTest extends AuditingTestCase
         $this->expectException(AuditingException::class);
         $this->expectExceptionMessage('Invalid UrlResolver implementation');
 
-        $this->app['config']->set('ensi-audit.resolver.url', null);
+        $this->app['config']->set('laravel-auditing.resolver.url', null);
 
         $model = new Article();
 
@@ -355,7 +355,7 @@ class AuditableTest extends AuditingTestCase
         $this->expectException(AuditingException::class);
         $this->expectExceptionMessage('Invalid UserAgentResolver implementation');
 
-        $this->app['config']->set('ensi-audit.resolver.user_agent', null);
+        $this->app['config']->set('laravel-auditing.resolver.user_agent', null);
 
         $model = new Article();
 
@@ -374,7 +374,7 @@ class AuditableTest extends AuditingTestCase
         $this->expectException(AuditingException::class);
         $this->expectExceptionMessage('Invalid UserResolver implementation');
 
-        $this->app['config']->set('ensi-audit.resolver.user', null);
+        $this->app['config']->set('laravel-auditing.resolver.user', null);
 
         $model = new Article();
 
@@ -471,7 +471,7 @@ class AuditableTest extends AuditingTestCase
      */
     public function itExcludesAttributesFromTheAuditDataWhenInStrictMode()
     {
-        $this->app['config']->set('ensi-audit.strict', true);
+        $this->app['config']->set('laravel-auditing.strict', true);
 
         $model = Article::factory()->make([
             'title'        => 'How To Audit Eloquent Models',
@@ -706,7 +706,7 @@ class AuditableTest extends AuditingTestCase
      */
     public function itReturnsTheCustomAuditStrictValueFromConfig()
     {
-        $this->app['config']->set('ensi-audit.strict', true);
+        $this->app['config']->set('laravel-auditing.strict', true);
 
         $model = new Article();
 
@@ -743,7 +743,7 @@ class AuditableTest extends AuditingTestCase
      */
     public function itReturnsTheCustomAuditTimestampsValueFromConfig()
     {
-        $this->app['config']->set('ensi-audit.timestamps', true);
+        $this->app['config']->set('laravel-auditing.timestamps', true);
 
         $model = new Article();
 
@@ -780,7 +780,7 @@ class AuditableTest extends AuditingTestCase
      */
     public function itReturnsTheCustomAuditDriverValueFromConfig()
     {
-        $this->app['config']->set('ensi-audit.driver', 'RedisDriver');
+        $this->app['config']->set('laravel-auditing.driver', 'RedisDriver');
 
         $model = new Article();
 
@@ -817,7 +817,7 @@ class AuditableTest extends AuditingTestCase
      */
     public function itReturnsTheCustomAuditThresholdValueFromConfig()
     {
-        $this->app['config']->set('ensi-audit.threshold', 200);
+        $this->app['config']->set('laravel-auditing.threshold', 200);
 
         $model = new Article();
 
@@ -864,7 +864,7 @@ class AuditableTest extends AuditingTestCase
     public function itFailsToTransitionWhenTheAuditAuditableTypeDoesNotMatchTheModelType()
     {
         $this->expectException(AuditableTransitionException::class);
-        $this->expectExceptionMessage('Expected Auditable type Ensi\LaravelEnsiAudit\Tests\Models\Article, got Ensi\LaravelEnsiAudit\Tests\Models\User instead');
+        $this->expectExceptionMessage('Expected Auditable type Greensight\LaravelAuditing\Tests\Models\Article, got Greensight\LaravelAuditing\Tests\Models\User instead');
 
         $audit = AuditFactory::new()->make([
             'auditable_type' => User::class,
@@ -1010,7 +1010,7 @@ class AuditableTest extends AuditingTestCase
             $model->transitionTo($incompatibleAudit);
         } catch (AuditableTransitionException $e) {
             $this->assertSame(
-                'Incompatibility between [Ensi\LaravelEnsiAudit\Tests\Models\Article:1] and [Ensi\LaravelEnsiAudit\Models\Audit:3]',
+                'Incompatibility between [Greensight\LaravelAuditing\Tests\Models\Article:1] and [Greensight\LaravelAuditing\Models\Audit:3]',
                 $e->getMessage()
             );
 

@@ -1,14 +1,14 @@
 <?php
 
-namespace Ensi\LaravelEnsiAudit;
+namespace Greensight\LaravelAuditing;
 
 use DateTimeInterface;
-use Ensi\LaravelEnsiAudit\Contracts\Principal;
+use Greensight\LaravelAuditing\Contracts\Principal;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\Model;
-use Ensi\LaravelEnsiAudit\Contracts\AttributeEncoder;
+use Greensight\LaravelAuditing\Contracts\AttributeEncoder;
 
 trait Audit
 {
@@ -53,7 +53,7 @@ trait Audit
      */
     public function getConnectionName()
     {
-        return Config::get('ensi-audit.drivers.database.connection');
+        return Config::get('laravel-auditing.drivers.database.connection');
     }
 
     /**
@@ -61,7 +61,7 @@ trait Audit
      */
     public function getTable(): string
     {
-        return Config::get('ensi-audit.drivers.database.table', parent::getTable());
+        return Config::get('laravel-auditing.drivers.database.table', parent::getTable());
     }
 
     /**

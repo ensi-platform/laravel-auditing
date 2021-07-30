@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'implementation' => Ensi\LaravelEnsiAudit\Models\Audit::class,
+    'implementation' => Greensight\LaravelAuditing\Models\Audit::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -37,10 +37,10 @@ return [
     |
     */
     'resolver' => [
-        'user'       => Ensi\LaravelEnsiAudit\Facades\Subject::class,
-        'ip_address' => Ensi\LaravelEnsiAudit\Resolvers\IpAddressResolver::class,
-        'user_agent' => Ensi\LaravelEnsiAudit\Resolvers\UserAgentResolver::class,
-        'url'        => Ensi\LaravelEnsiAudit\Resolvers\UrlResolver::class,
+        'user'       => Greensight\LaravelAuditing\Facades\Subject::class,
+        'ip_address' => Greensight\LaravelAuditing\Resolvers\IpAddressResolver::class,
+        'user_agent' => Greensight\LaravelAuditing\Resolvers\UserAgentResolver::class,
+        'url'        => Greensight\LaravelAuditing\Resolvers\UrlResolver::class,
     ],
 
     /*

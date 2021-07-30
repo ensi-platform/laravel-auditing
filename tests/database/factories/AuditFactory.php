@@ -1,9 +1,9 @@
 <?php
-namespace Ensi\LaravelEnsiAudit\Database\Factories;
+namespace Greensight\LaravelAuditing\Database\Factories;
 
-use Ensi\LaravelEnsiAudit\Models\Audit;
-use Ensi\LaravelEnsiAudit\Tests\Models\Article;
-use Ensi\LaravelEnsiAudit\Tests\Models\User;
+use Greensight\LaravelAuditing\Models\Audit;
+use Greensight\LaravelAuditing\Tests\Models\Article;
+use Greensight\LaravelAuditing\Tests\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /*

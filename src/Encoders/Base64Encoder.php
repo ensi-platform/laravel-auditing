@@ -1,8 +1,8 @@
 <?php
 
-namespace Ensi\LaravelEnsiAudit\Encoders;
+namespace Greensight\LaravelAuditing\Encoders;
 
-class Base64Encoder implements \Ensi\LaravelEnsiAudit\Contracts\AttributeEncoder
+class Base64Encoder implements \Greensight\LaravelAuditing\Contracts\AttributeEncoder
 {
     /**
      * {@inheritdoc}

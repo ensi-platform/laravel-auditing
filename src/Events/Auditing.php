@@ -1,31 +1,31 @@
 <?php
 
-namespace Ensi\LaravelEnsiAudit\Events;
+namespace Greensight\LaravelAuditing\Events;
 
-use Ensi\LaravelEnsiAudit\Contracts\Auditable;
-use Ensi\LaravelEnsiAudit\Contracts\AuditDriver;
+use Greensight\LaravelAuditing\Contracts\Auditable;
+use Greensight\LaravelAuditing\Contracts\AuditDriver;
 
 class Auditing
 {
     /**
      * The Auditable model.
      *
-     * @var \Ensi\LaravelEnsiAudit\Contracts\Auditable
+     * @var \Greensight\LaravelAuditing\Contracts\Auditable
      */
     public $model;
 
     /**
      * Audit driver.
      *
-     * @var \Ensi\LaravelEnsiAudit\Contracts\AuditDriver
+     * @var \Greensight\LaravelAuditing\Contracts\AuditDriver
      */
     public $driver;
 
     /**
      * Create a new Auditing event instance.
      *
-     * @param \Ensi\LaravelEnsiAudit\Contracts\Auditable   $model
-     * @param \Ensi\LaravelEnsiAudit\Contracts\AuditDriver $driver
+     * @param \Greensight\LaravelAuditing\Contracts\Auditable   $model
+     * @param \Greensight\LaravelAuditing\Contracts\AuditDriver $driver
      */
     public function __construct(Auditable $model, AuditDriver $driver)
     {

@@ -1,13 +1,13 @@
 <?php
 
-namespace Ensi\LaravelEnsiAudit;
+namespace Greensight\LaravelAuditing;
 
-use Ensi\LaravelEnsiAudit\Contracts\Auditable;
-use Ensi\LaravelEnsiAudit\Contracts\AuditDriver;
-use Ensi\LaravelEnsiAudit\Drivers\Database;
-use Ensi\LaravelEnsiAudit\Events\Audited;
-use Ensi\LaravelEnsiAudit\Events\Auditing;
-use Ensi\LaravelEnsiAudit\Exceptions\AuditingException;
+use Greensight\LaravelAuditing\Contracts\Auditable;
+use Greensight\LaravelAuditing\Contracts\AuditDriver;
+use Greensight\LaravelAuditing\Drivers\Database;
+use Greensight\LaravelAuditing\Events\Audited;
+use Greensight\LaravelAuditing\Events\Auditing;
+use Greensight\LaravelAuditing\Exceptions\AuditingException;
 use Illuminate\Support\Manager;
 use InvalidArgumentException;
 
@@ -78,7 +78,7 @@ class Auditor extends Manager implements Contracts\Auditor
     /**
      * Create an instance of the Database audit driver.
      *
-     * @return \Ensi\LaravelEnsiAudit\Drivers\Database
+     * @return \Greensight\LaravelAuditing\Drivers\Database
      */
     protected function createDatabaseDriver(): Database
     {
@@ -88,8 +88,8 @@ class Auditor extends Manager implements Contracts\Auditor
     /**
      * Fire the Auditing event.
      *
-     * @param \Ensi\LaravelEnsiAudit\Contracts\Auditable   $model
-     * @param \Ensi\LaravelEnsiAudit\Contracts\AuditDriver $driver
+     * @param \Greensight\LaravelAuditing\Contracts\Auditable   $model
+     * @param \Greensight\LaravelAuditing\Contracts\AuditDriver $driver
      *
      * @return bool
      */

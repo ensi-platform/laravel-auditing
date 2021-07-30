@@ -1,12 +1,12 @@
 <?php
 
-namespace Ensi\LaravelEnsiAudit\Tests\Models;
+namespace Greensight\LaravelAuditing\Tests\Models;
 
-use Ensi\LaravelEnsiAudit\Database\Factories\ApiModelFactory;
-use Ensi\LaravelEnsiAudit\SupportsAudit;
+use Greensight\LaravelAuditing\Database\Factories\ApiModelFactory;
+use Greensight\LaravelAuditing\SupportsAudit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Ensi\LaravelEnsiAudit\Contracts\Auditable;
+use Greensight\LaravelAuditing\Contracts\Auditable;
 
 class ApiModel extends Model implements Auditable
 {

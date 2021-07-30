@@ -1,16 +1,16 @@
 <?php
 
-namespace Ensi\LaravelEnsiAudit\Tests\Unit;
+namespace Greensight\LaravelAuditing\Tests\Unit;
 
 use Carbon\Carbon;
 use DateTimeInterface;
-use Ensi\LaravelEnsiAudit\Database\Factories\AuditFactory;
-use Ensi\LaravelEnsiAudit\Encoders\Base64Encoder;
-use Ensi\LaravelEnsiAudit\Facades\Subject;
-use Ensi\LaravelEnsiAudit\Redactors\LeftRedactor;
-use Ensi\LaravelEnsiAudit\Tests\AuditingTestCase;
-use Ensi\LaravelEnsiAudit\Tests\Models\Article;
-use Ensi\LaravelEnsiAudit\Tests\Models\User;
+use Greensight\LaravelAuditing\Database\Factories\AuditFactory;
+use Greensight\LaravelAuditing\Encoders\Base64Encoder;
+use Greensight\LaravelAuditing\Facades\Subject;
+use Greensight\LaravelAuditing\Redactors\LeftRedactor;
+use Greensight\LaravelAuditing\Tests\AuditingTestCase;
+use Greensight\LaravelAuditing\Tests\Models\Article;
+use Greensight\LaravelAuditing\Tests\Models\User;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithTime;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Testing\Assert;
@@ -265,7 +265,7 @@ EOF;
     "root_entity_id": null,
     "root_entity_type": null,
     "subject_id": "$userId",
-    "subject_type": "Ensi\\\\LaravelEnsiAudit\\\\Tests\\\\Models\\\\User",
+    "subject_type": "Greensight\\\\LaravelAuditing\\\\Tests\\\\Models\\\\User",
     "transaction_uid": null,
     "transaction_time": "$now",
     "subject_name": "Rick",

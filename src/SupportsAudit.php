@@ -1,20 +1,20 @@
 <?php
 
-namespace Ensi\LaravelEnsiAudit;
+namespace Greensight\LaravelAuditing;
 
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
-use Ensi\LaravelEnsiAudit\Contracts\AttributeEncoder;
-use Ensi\LaravelEnsiAudit\Contracts\AttributeRedactor;
-use Ensi\LaravelEnsiAudit\Contracts\IpAddressResolver;
-use Ensi\LaravelEnsiAudit\Contracts\UrlResolver;
-use Ensi\LaravelEnsiAudit\Contracts\UserAgentResolver;
-use Ensi\LaravelEnsiAudit\Contracts\UserResolver;
-use Ensi\LaravelEnsiAudit\Exceptions\AuditableTransitionException;
-use Ensi\LaravelEnsiAudit\Exceptions\AuditingException;
+use Greensight\LaravelAuditing\Contracts\AttributeEncoder;
+use Greensight\LaravelAuditing\Contracts\AttributeRedactor;
+use Greensight\LaravelAuditing\Contracts\IpAddressResolver;
+use Greensight\LaravelAuditing\Contracts\UrlResolver;
+use Greensight\LaravelAuditing\Contracts\UserAgentResolver;
+use Greensight\LaravelAuditing\Contracts\UserResolver;
+use Greensight\LaravelAuditing\Exceptions\AuditableTransitionException;
+use Greensight\LaravelAuditing\Exceptions\AuditingException;
 
 trait SupportsAudit
 {
@@ -57,7 +57,7 @@ trait SupportsAudit
     public function audits(): MorphMany
     {
         return $this->morphMany(
-            Config::get('ensi-audit.implementation', Models\Audit::class),
+            Config::get('laravel-auditing.implementation', Models\Audit::class),
             'auditable'
         );
     }
@@ -334,7 +334,7 @@ trait SupportsAudit
      */
     protected function resolveUser()
     {
-        $userResolver = Config::get('ensi-audit.resolver.user');
+        $userResolver = Config::get('laravel-auditing.resolver.user');
 
         if (is_subclass_of($userResolver, UserResolver::class)) {
             return call_user_func([$userResolver, 'resolve']);
@@ -352,7 +352,7 @@ trait SupportsAudit
      */
     protected function resolveUrl(): string
     {
-        $urlResolver = Config::get('ensi-audit.resolver.url');
+        $urlResolver = Config::get('laravel-auditing.resolver.url');
 
         if (is_subclass_of($urlResolver, UrlResolver::class)) {
             return call_user_func([$urlResolver, 'resolve']);
@@ -370,7 +370,7 @@ trait SupportsAudit
      */
     protected function resolveIpAddress(): string
     {
-        $ipAddressResolver = Config::get('ensi-audit.resolver.ip_address');
+        $ipAddressResolver = Config::get('laravel-auditing.resolver.ip_address');
 
         if (is_subclass_of($ipAddressResolver, IpAddressResolver::class)) {
             return call_user_func([$ipAddressResolver, 'resolve']);
@@ -388,7 +388,7 @@ trait SupportsAudit
      */
     protected function resolveUserAgent()
     {
-        $userAgentResolver = Config::get('ensi-audit.resolver.user_agent');
+        $userAgentResolver = Config::get('laravel-auditing.resolver.user_agent');
 
         if (is_subclass_of($userAgentResolver, UserAgentResolver::class)) {
             return call_user_func([$userAgentResolver, 'resolve']);
@@ -473,7 +473,7 @@ trait SupportsAudit
      */
     public function getAuditEvents(): array
     {
-        return $this->auditEvents ?? Config::get('ensi-audit.events', [
+        return $this->auditEvents ?? Config::get('laravel-auditing.events', [
             'created',
             'updated',
             'deleted',
@@ -509,10 +509,10 @@ trait SupportsAudit
     public static function isAuditingEnabled(): bool
     {
         if (App::runningInConsole()) {
-            return Config::get('ensi-audit.console', false);
+            return Config::get('laravel-auditing.console', false);
         }
 
-        return Config::get('ensi-audit.enabled', true);
+        return Config::get('laravel-auditing.enabled', true);
     }
 
     /**
@@ -536,7 +536,7 @@ trait SupportsAudit
      */
     public function getAuditStrict(): bool
     {
-        return $this->auditStrict ?? Config::get('ensi-audit.strict', false);
+        return $this->auditStrict ?? Config::get('laravel-auditing.strict', false);
     }
 
     /**
@@ -544,7 +544,7 @@ trait SupportsAudit
      */
     public function getAuditTimestamps(): bool
     {
-        return $this->auditTimestamps ?? Config::get('ensi-audit.timestamps', false);
+        return $this->auditTimestamps ?? Config::get('laravel-auditing.timestamps', false);
     }
 
     /**
@@ -552,7 +552,7 @@ trait SupportsAudit
      */
     public function getAuditDriver()
     {
-        return $this->auditDriver ?? Config::get('ensi-audit.driver', 'database');
+        return $this->auditDriver ?? Config::get('laravel-auditing.driver', 'database');
     }
 
     /**
@@ -560,7 +560,7 @@ trait SupportsAudit
      */
     public function getAuditThreshold(): int
     {
-        return $this->auditThreshold ?? Config::get('ensi-audit.threshold', 0);
+        return $this->auditThreshold ?? Config::get('laravel-auditing.threshold', 0);
     }
 
     /**

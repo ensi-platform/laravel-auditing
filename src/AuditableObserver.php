@@ -1,9 +1,9 @@
 <?php
 
-namespace Ensi\LaravelEnsiAudit;
+namespace Greensight\LaravelAuditing;
 
-use Ensi\LaravelEnsiAudit\Contracts\Auditable;
-use Ensi\LaravelEnsiAudit\Facades\Auditor;
+use Greensight\LaravelAuditing\Contracts\Auditable;
+use Greensight\LaravelAuditing\Facades\Auditor;
 
 class AuditableObserver
 {
@@ -17,7 +17,7 @@ class AuditableObserver
     /**
      * Handle the retrieved event.
      *
-     * @param \Ensi\LaravelEnsiAudit\Contracts\Auditable $model
+     * @param \Greensight\LaravelAuditing\Contracts\Auditable $model
      *
      * @return void
      */
@@ -29,7 +29,7 @@ class AuditableObserver
     /**
      * Handle the created event.
      *
-     * @param \Ensi\LaravelEnsiAudit\Contracts\Auditable $model
+     * @param \Greensight\LaravelAuditing\Contracts\Auditable $model
      *
      * @return void
      */
@@ -41,7 +41,7 @@ class AuditableObserver
     /**
      * Handle the updated event.
      *
-     * @param \Ensi\LaravelEnsiAudit\Contracts\Auditable $model
+     * @param \Greensight\LaravelAuditing\Contracts\Auditable $model
      *
      * @return void
      */
@@ -56,7 +56,7 @@ class AuditableObserver
     /**
      * Handle the deleted event.
      *
-     * @param \Ensi\LaravelEnsiAudit\Contracts\Auditable $model
+     * @param \Greensight\LaravelAuditing\Contracts\Auditable $model
      *
      * @return void
      */
@@ -68,7 +68,7 @@ class AuditableObserver
     /**
      * Handle the restoring event.
      *
-     * @param \Ensi\LaravelEnsiAudit\Contracts\Auditable $model
+     * @param \Greensight\LaravelAuditing\Contracts\Auditable $model
      *
      * @return void
      */
@@ -83,7 +83,7 @@ class AuditableObserver
     /**
      * Handle the restored event.
      *
-     * @param \Ensi\LaravelEnsiAudit\Contracts\Auditable $model
+     * @param \Greensight\LaravelAuditing\Contracts\Auditable $model
      *
      * @return void
      */

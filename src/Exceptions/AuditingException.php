@@ -1,6 +1,6 @@
 <?php
 
-namespace Ensi\LaravelEnsiAudit\Exceptions;
+namespace Greensight\LaravelAuditing\Exceptions;
 
 use Exception;
 

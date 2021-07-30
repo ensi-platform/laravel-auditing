@@ -1,12 +1,12 @@
 <?php
 
-namespace Ensi\LaravelEnsiAudit\Tests;
+namespace Greensight\LaravelAuditing\Tests;
 
-use Ensi\LaravelEnsiAudit\EnsiAuditServiceProvider;
-use Ensi\LaravelEnsiAudit\Facades\Subject;
-use Ensi\LaravelEnsiAudit\Resolvers\IpAddressResolver;
-use Ensi\LaravelEnsiAudit\Resolvers\UrlResolver;
-use Ensi\LaravelEnsiAudit\Resolvers\UserAgentResolver;
+use Greensight\LaravelAuditing\LaravelAuditingServiceProvider;
+use Greensight\LaravelAuditing\Facades\Subject;
+use Greensight\LaravelAuditing\Resolvers\IpAddressResolver;
+use Greensight\LaravelAuditing\Resolvers\UrlResolver;
+use Greensight\LaravelAuditing\Resolvers\UserAgentResolver;
 use Orchestra\Testbench\TestCase;
 
 class AuditingTestCase extends TestCase
@@ -25,17 +25,17 @@ class AuditingTestCase extends TestCase
         ]);
 
         // Audit
-        $app['config']->set('ensi-audit.drivers.database.connection', 'testing');
-        $app['config']->set('ensi-audit.user.morph_prefix', 'user');
-        $app['config']->set('ensi-audit.user.guards', [
+        $app['config']->set('laravel-auditing.drivers.database.connection', 'testing');
+        $app['config']->set('laravel-auditing.user.morph_prefix', 'user');
+        $app['config']->set('laravel-auditing.user.guards', [
             'web',
             'api',
         ]);
-        $app['config']->set('ensi-audit.resolver.user', Subject::class);
-        $app['config']->set('ensi-audit.resolver.url', UrlResolver::class);
-        $app['config']->set('ensi-audit.resolver.ip_address', IpAddressResolver::class);
-        $app['config']->set('ensi-audit.resolver.user_agent', UserAgentResolver::class);
-        $app['config']->set('ensi-audit.console', true);
+        $app['config']->set('laravel-auditing.resolver.user', Subject::class);
+        $app['config']->set('laravel-auditing.resolver.url', UrlResolver::class);
+        $app['config']->set('laravel-auditing.resolver.ip_address', IpAddressResolver::class);
+        $app['config']->set('laravel-auditing.resolver.user_agent', UserAgentResolver::class);
+        $app['config']->set('laravel-auditing.console', true);
     }
 
     /**
@@ -54,7 +54,7 @@ class AuditingTestCase extends TestCase
     protected function getPackageProviders($app)
     {
         return [
-            EnsiAuditServiceProvider::class,
+            LaravelAuditingServiceProvider::class,
         ];
     }
 }

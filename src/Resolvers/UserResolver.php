@@ -1,18 +1,18 @@
 <?php
 
-namespace Ensi\LaravelEnsiAudit\Resolvers;
+namespace Greensight\LaravelAuditing\Resolvers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 
-class UserResolver implements \Ensi\LaravelEnsiAudit\Contracts\UserResolver
+class UserResolver implements \Greensight\LaravelAuditing\Contracts\UserResolver
 {
     /**
      * {@inheritdoc}
      */
     public static function resolve()
     {
-        $guards = Config::get('ensi-audit.user.guards', [
+        $guards = Config::get('laravel-auditing.user.guards', [
             'web',
             'api',
         ]);

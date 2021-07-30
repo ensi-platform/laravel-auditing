@@ -1,15 +1,15 @@
 <?php
 
-namespace Ensi\LaravelEnsiAudit;
+namespace Greensight\LaravelAuditing;
 
-use Ensi\LaravelEnsiAudit\Console\AuditDriverCommand;
-use Ensi\LaravelEnsiAudit\Console\InstallCommand;
-use Ensi\LaravelEnsiAudit\Contracts\Auditor;
-use Ensi\LaravelEnsiAudit\Drivers\Database;
-use Ensi\LaravelEnsiAudit\Facades\Subject;
-use Ensi\LaravelEnsiAudit\Facades\Transaction;
-use Ensi\LaravelEnsiAudit\Resolvers\SubjectManager;
-use Ensi\LaravelEnsiAudit\Transactions\TransactionRegistry;
+use Greensight\LaravelAuditing\Console\AuditDriverCommand;
+use Greensight\LaravelAuditing\Console\InstallCommand;
+use Greensight\LaravelAuditing\Contracts\Auditor;
+use Greensight\LaravelAuditing\Drivers\Database;
+use Greensight\LaravelAuditing\Facades\Subject;
+use Greensight\LaravelAuditing\Facades\Transaction;
+use Greensight\LaravelAuditing\Resolvers\SubjectManager;
+use Greensight\LaravelAuditing\Transactions\TransactionRegistry;
 use Illuminate\Database\Events\TransactionBeginning;
 use Illuminate\Database\Events\TransactionCommitted;
 use Illuminate\Database\Events\TransactionRolledBack;
@@ -17,7 +17,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
-class EnsiAuditServiceProvider extends ServiceProvider
+class LaravelAuditingServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the service provider.
@@ -29,7 +29,7 @@ class EnsiAuditServiceProvider extends ServiceProvider
         $this->registerPublishing();
         $this->registerListeners();
 
-        $this->mergeConfigFrom(__DIR__.'/../config/ensi-audit.php', 'ensi-audit');
+        $this->mergeConfigFrom(__DIR__.'/../config/laravel-auditing.php', 'laravel-auditing');
     }
 
     /**
@@ -54,7 +54,7 @@ class EnsiAuditServiceProvider extends ServiceProvider
 
 
         $this->app->singleton(Auditor::class, function (Application $app) {
-            return new \Ensi\LaravelEnsiAudit\Auditor($app);
+            return new \Greensight\LaravelAuditing\Auditor($app);
         });
 
         $this->app->singleton(SubjectManager::class);
@@ -71,7 +71,7 @@ class EnsiAuditServiceProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/ensi-audit.php' => base_path('config/ensi-audit.php'),
+                __DIR__.'/../config/laravel-auditing.php' => base_path('config/laravel-auditing.php'),
             ], 'config');
 
             $this->publishes([

@@ -1,17 +1,17 @@
 <?php
 
-namespace Ensi\LaravelEnsiAudit\Tests\Functional;
+namespace Greensight\LaravelAuditing\Tests\Functional;
 
 use Carbon\Carbon;
-use Ensi\LaravelEnsiAudit\Database\Factories\ApiModelFactory;
-use Ensi\LaravelEnsiAudit\Database\Factories\ArticleFactory;
-use Ensi\LaravelEnsiAudit\Events\Auditing;
-use Ensi\LaravelEnsiAudit\Exceptions\AuditingException;
-use Ensi\LaravelEnsiAudit\Facades\Transaction;
-use Ensi\LaravelEnsiAudit\Models\Audit;
-use Ensi\LaravelEnsiAudit\Tests\AuditingTestCase;
-use Ensi\LaravelEnsiAudit\Tests\Models\Article;
-use Ensi\LaravelEnsiAudit\Tests\Models\User;
+use Greensight\LaravelAuditing\Database\Factories\ApiModelFactory;
+use Greensight\LaravelAuditing\Database\Factories\ArticleFactory;
+use Greensight\LaravelAuditing\Events\Auditing;
+use Greensight\LaravelAuditing\Exceptions\AuditingException;
+use Greensight\LaravelAuditing\Facades\Transaction;
+use Greensight\LaravelAuditing\Models\Audit;
+use Greensight\LaravelAuditing\Tests\AuditingTestCase;
+use Greensight\LaravelAuditing\Tests\Models\Article;
+use Greensight\LaravelAuditing\Tests\Models\User;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
@@ -25,7 +25,7 @@ class AuditingTest extends AuditingTestCase
      */
     public function itWillNotAuditModelsWhenRunningFromTheConsole()
     {
-        $this->app['config']->set('ensi-audit.console', false);
+        $this->app['config']->set('laravel-auditing.console', false);
 
         User::factory()->create();
 
@@ -38,7 +38,7 @@ class AuditingTest extends AuditingTestCase
      */
     public function itWillAuditModelsWhenRunningFromTheConsole()
     {
-        $this->app['config']->set('ensi-audit.console', true);
+        $this->app['config']->set('laravel-auditing.console', true);
 
         User::factory()->create();
 
@@ -54,7 +54,7 @@ class AuditingTest extends AuditingTestCase
         App::shouldReceive('runningInConsole')
             ->andReturn(false);
 
-        $this->app['config']->set('ensi-audit.console', false);
+        $this->app['config']->set('laravel-auditing.console', false);
 
         User::factory()->create();
 
@@ -67,7 +67,7 @@ class AuditingTest extends AuditingTestCase
      */
     public function itWillNotAuditTheRetrievingEvent()
     {
-        $this->app['config']->set('ensi-audit.console', true);
+        $this->app['config']->set('laravel-auditing.console', true);
 
         User::factory()->create();
 
@@ -85,8 +85,8 @@ class AuditingTest extends AuditingTestCase
      */
     public function itWillAuditTheRetrievingEvent()
     {
-        $this->app['config']->set('ensi-audit.console', true);
-        $this->app['config']->set('ensi-audit.events', [
+        $this->app['config']->set('laravel-auditing.console', true);
+        $this->app['config']->set('laravel-auditing.events', [
             'created',
             'retrieved',
         ]);
@@ -107,7 +107,7 @@ class AuditingTest extends AuditingTestCase
      */
     public function itWillAuditTheRetrievedEvent()
     {
-        $this->app['config']->set('ensi-audit.events', [
+        $this->app['config']->set('laravel-auditing.events', [
             'retrieved',
         ]);
 
@@ -132,7 +132,7 @@ class AuditingTest extends AuditingTestCase
      */
     public function itWillAuditTheCreatedEvent()
     {
-        $this->app['config']->set('ensi-audit.events', [
+        $this->app['config']->set('laravel-auditing.events', [
             'created',
         ]);
 
@@ -160,7 +160,7 @@ class AuditingTest extends AuditingTestCase
      */
     public function itWillAuditTheUpdatedEvent()
     {
-        $this->app['config']->set('ensi-audit.events', [
+        $this->app['config']->set('laravel-auditing.events', [
             'updated',
         ]);
 
@@ -199,7 +199,7 @@ class AuditingTest extends AuditingTestCase
      */
     public function itWillAuditTheDeletedEvent()
     {
-        $this->app['config']->set('ensi-audit.events', [
+        $this->app['config']->set('laravel-auditing.events', [
             'deleted',
         ]);
 
@@ -229,7 +229,7 @@ class AuditingTest extends AuditingTestCase
      */
     public function itWillAuditTheRestoredEvent()
     {
-        $this->app['config']->set('ensi-audit.events', [
+        $this->app['config']->set('laravel-auditing.events', [
             'restored',
         ]);
 
@@ -260,8 +260,8 @@ class AuditingTest extends AuditingTestCase
      */
     public function itWillKeepAllAudits()
     {
-        $this->app['config']->set('ensi-audit.threshold', 0);
-        $this->app['config']->set('ensi-audit.events', [
+        $this->app['config']->set('laravel-auditing.threshold', 0);
+        $this->app['config']->set('laravel-auditing.events', [
             'updated',
         ]);
 
@@ -283,8 +283,8 @@ class AuditingTest extends AuditingTestCase
      */
     public function itWillRemoveOlderAuditsAboveTheThreshold()
     {
-        $this->app['config']->set('ensi-audit.threshold', 10);
-        $this->app['config']->set('ensi-audit.events', [
+        $this->app['config']->set('laravel-auditing.threshold', 10);
+        $this->app['config']->set('laravel-auditing.events', [
             'updated',
         ]);
 
@@ -306,7 +306,7 @@ class AuditingTest extends AuditingTestCase
      */
     public function itWillNotAuditDueToUnsupportedDriver()
     {
-        $this->app['config']->set('ensi-audit.driver', 'foo');
+        $this->app['config']->set('laravel-auditing.driver', 'foo');
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Driver [foo] not supported.');
@@ -320,7 +320,7 @@ class AuditingTest extends AuditingTestCase
     public function itWillNotAuditDueToClassWithoutDriverInterface()
     {
         // We just pass a FQCN that does not implement the AuditDriver interface
-        $this->app['config']->set('ensi-audit.driver', self::class);
+        $this->app['config']->set('laravel-auditing.driver', self::class);
 
         $this->expectException(AuditingException::class);
         $this->expectExceptionMessage('The driver must implement the AuditDriver contract');
@@ -333,7 +333,7 @@ class AuditingTest extends AuditingTestCase
      */
     public function itWillAuditUsingTheDefaultDriver()
     {
-        $this->app['config']->set('ensi-audit.driver', null);
+        $this->app['config']->set('laravel-auditing.driver', null);
 
         Article::factory()->create([
             'title'        => 'How To Audit Using The Fallback Driver',

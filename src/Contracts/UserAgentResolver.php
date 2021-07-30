@@ -1,6 +1,6 @@
 <?php
 
-namespace Ensi\LaravelEnsiAudit\Contracts;
+namespace Greensight\LaravelAuditing\Contracts;
 
 interface UserAgentResolver
 {

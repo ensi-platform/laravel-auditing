@@ -1,25 +1,12 @@
-# Laravel Ensi Audit
+# Laravel Auditing
 
-Пакет для работы с историей изменений данных Ensi в Laravel приложениях.
-Является форком [owen-it/laravel-auditing](https://github.com/owen-it/laravel-auditing).
+Opiniated fork of [owen-it/laravel-auditing](https://github.com/owen-it/laravel-auditing)
 
 ## Установка
 
-1. Добавьте в composer.json в repositories 
-
-```
-repositories: [
-    {
-        "type": "vcs",
-        "url": "https://gitlab.com/greensight/ensi/packages/laravel-ensi-audit.git"
-    }
-],
-
-```
-
-2. `composer require ensi/laravel-ensi-audit`
-3. `php artisan vendor:publish --provider="Ensi\LaravelEnsiAudit\EnsiAuditServiceProvider"`
-4. Добавьте в `config/app` класс провайдера `Ensi\LaravelEnsiAudit\EnsiAuditServiceProvider::class`
+1. `composer require greensight/laravel-auditing`
+2. `php artisan vendor:publish --provider="Greensight\LaravelAuditing\LaravelAuditingServiceProvider"`
+3. Добавьте в `config/app` класс провайдера `Greensight\LaravelAuditing\LaravelAuditingServiceProvider::class`
 
 ## Использование
 
@@ -27,8 +14,8 @@ repositories: [
 Чтобы включить логирование для конкретной модели надо добавить ей трейт `SupportsAudit` и интерфейс `Auditable`
 
 ```php
-use Ensi\LaravelEnsiAudit\Contracts\Auditable;
-use Ensi\LaravelEnsiAudit\SupportsAudit;
+use Greensight\LaravelAuditing\Contracts\Auditable;
+use Greensight\LaravelAuditing\SupportsAudit;
 
 class Something extends Model implements Auditable {
     use SupportsAudit;
@@ -37,7 +24,7 @@ class Something extends Model implements Auditable {
 ```
 
 В случае, если мы меняем данные дочерних с логической точки зрения моделей и хотим чтобы в истории это изменение проходило под родительской моделью, необходимо в транзакции до изменения данных задать корневую сущность (т.е модель).
-Делается это через фасад `Transaction` или менеджер `\\Ensi\\LaravelEnsiAudit\\Transactions\\ExtendedTransactionManager` 
+Делается это через фасад `Transaction` или менеджер `\\Greensight\\LaravelAuditing\\Transactions\\ExtendedTransactionManager` 
 
 ```php
 DB::transaction(function () {
@@ -47,10 +34,10 @@ DB::transaction(function () {
 });
 ```
 
-Для добавления в историю данных о том кто произвел изменения (конкретный пользователь, или, например, консольная команда) опять же нужно это сделать до изменения данных, но уже через фасад `Subject` или инъекцию `\\Ensi\\LaravelEnsiAudit\\Resolvers\\SubjectManager`
+Для добавления в историю данных о том кто произвел изменения (конкретный пользователь, или, например, консольная команда) опять же нужно это сделать до изменения данных, но уже через фасад `Subject` или инъекцию `\\Greensight\\LaravelAuditing\\Resolvers\\SubjectManager`
 
 ```php
-Subject::attach($subject); // $subject - объект реализующий Ensi\LaravelEnsiAudit\Contracts
+Subject::attach($subject); // $subject - объект реализующий Greensight\LaravelAuditing\Contracts
 ```
 
 Субъект не отвязывается после завершения транзакции. 
@@ -59,7 +46,7 @@ Subject::attach($subject); // $subject - объект реализующий Ens
 При обработке http запросов, можно задавать субъекта в middleware. В консольных командах и
 обработчиках очереди событий переназначать в процессе выполнения.
 
-Субъектом может являться любая сущность, поддерживающая интерфейс `\Ensi\LaravelEnsiAudit\Contracts\Principal`.
+Субъектом может являться любая сущность, поддерживающая интерфейс `\Greensight\LaravelAuditing\Contracts\Principal`.
 Если субъектом является выполняемое задание, например, импорт из файла, то оно может возвращать идентификатор
 пользователя, создавшего задание в методе `getUserIdentifier()`, а в качестве наименования возвращать имя
 импортируемого файла.
@@ -70,4 +57,4 @@ Subject::attach($subject); // $subject - объект реализующий Ens
 
 ## Лицензия
 
-[Открытая лицензия на право использования программы для ЭВМ Greensight Ecom Platform (GEP)](LICENSE.md).
+[The MIT License (MIT)](LICENSE.md).

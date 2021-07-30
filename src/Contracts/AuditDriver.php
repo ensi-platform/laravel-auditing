@@ -1,22 +1,22 @@
 <?php
 
-namespace Ensi\LaravelEnsiAudit\Contracts;
+namespace Greensight\LaravelAuditing\Contracts;
 
 interface AuditDriver
 {
     /**
      * Perform an audit.
      *
-     * @param \Ensi\LaravelEnsiAudit\Contracts\Auditable $model
+     * @param \Greensight\LaravelAuditing\Contracts\Auditable $model
      *
-     * @return \Ensi\LaravelEnsiAudit\Contracts\Audit
+     * @return \Greensight\LaravelAuditing\Contracts\Audit
      */
     public function audit(Auditable $model): Audit;
 
     /**
      * Remove older audits that go over the threshold.
      *
-     * @param \Ensi\LaravelEnsiAudit\Contracts\Auditable $model
+     * @param \Greensight\LaravelAuditing\Contracts\Auditable $model
      *
      * @return bool
      */
