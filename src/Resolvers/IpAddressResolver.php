@@ -1,10 +1,10 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Resolvers;
+namespace Ensi\LaravelAuditing\Resolvers;
 
 use Illuminate\Support\Facades\Request;
 
-class IpAddressResolver implements \Greensight\LaravelAuditing\Contracts\IpAddressResolver
+class IpAddressResolver implements \Ensi\LaravelAuditing\Contracts\IpAddressResolver
 {
     /**
      * {@inheritdoc}

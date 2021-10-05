@@ -1,6 +1,6 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Models;
+namespace Ensi\LaravelAuditing\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -28,16 +28,16 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $transaction_uid
  * @property \Carbon\CarbonInterface $transaction_time
  *
- * @property \Illuminate\Database\Eloquent\Model|\Greensight\LaravelAuditing\Contracts\Principal|null $subject
- * @property \Illuminate\Database\Eloquent\Model|\Greensight\LaravelAuditing\Contracts\Auditable $auditable
+ * @property \Illuminate\Database\Eloquent\Model|\Ensi\LaravelAuditing\Contracts\Principal|null $subject
+ * @property \Illuminate\Database\Eloquent\Model|\Ensi\LaravelAuditing\Contracts\Auditable $auditable
  * @property \Illuminate\Database\Eloquent\Model|null $root
  *
  * @method static static create(array $attributes)
  * @method static \Illuminate\Database\Eloquent\Builder|static forRoot(\Illuminate\Database\Eloquent\Model $root)
  */
-class Audit extends Model implements \Greensight\LaravelAuditing\Contracts\Audit
+class Audit extends Model implements \Ensi\LaravelAuditing\Contracts\Audit
 {
-    use \Greensight\LaravelAuditing\Audit;
+    use \Ensi\LaravelAuditing\Audit;
 
     /**
      * {@inheritdoc}

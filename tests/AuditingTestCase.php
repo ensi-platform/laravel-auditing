@@ -1,12 +1,12 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Tests;
+namespace Ensi\LaravelAuditing\Tests;
 
-use Greensight\LaravelAuditing\LaravelAuditingServiceProvider;
-use Greensight\LaravelAuditing\Facades\Subject;
-use Greensight\LaravelAuditing\Resolvers\IpAddressResolver;
-use Greensight\LaravelAuditing\Resolvers\UrlResolver;
-use Greensight\LaravelAuditing\Resolvers\UserAgentResolver;
+use Ensi\LaravelAuditing\LaravelAuditingServiceProvider;
+use Ensi\LaravelAuditing\Facades\Subject;
+use Ensi\LaravelAuditing\Resolvers\IpAddressResolver;
+use Ensi\LaravelAuditing\Resolvers\UrlResolver;
+use Ensi\LaravelAuditing\Resolvers\UserAgentResolver;
 use Orchestra\Testbench\TestCase;
 
 class AuditingTestCase extends TestCase

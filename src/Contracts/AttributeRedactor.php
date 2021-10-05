@@ -1,6 +1,6 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Contracts;
+namespace Ensi\LaravelAuditing\Contracts;
 
 interface AttributeRedactor extends AttributeModifier
 {

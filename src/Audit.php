@@ -1,14 +1,14 @@
 <?php
 
-namespace Greensight\LaravelAuditing;
+namespace Ensi\LaravelAuditing;
 
 use DateTimeInterface;
-use Greensight\LaravelAuditing\Contracts\Principal;
+use Ensi\LaravelAuditing\Contracts\Principal;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Database\Eloquent\Model;
-use Greensight\LaravelAuditing\Contracts\AttributeEncoder;
+use Ensi\LaravelAuditing\Contracts\AttributeEncoder;
 
 trait Audit
 {

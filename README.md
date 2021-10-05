@@ -4,9 +4,9 @@ Opiniated fork of [owen-it/laravel-auditing](https://github.com/owen-it/laravel-
 
 ## Установка
 
-1. `composer require greensight/laravel-auditing`
-2. `php artisan vendor:publish --provider="Greensight\LaravelAuditing\LaravelAuditingServiceProvider"`
-3. Добавьте в `config/app` класс провайдера `Greensight\LaravelAuditing\LaravelAuditingServiceProvider::class`
+1. `composer require ensi/laravel-auditing`
+2. `php artisan vendor:publish --provider="Ensi\LaravelAuditing\LaravelAuditingServiceProvider"`
+3. Добавьте в `config/app` класс провайдера `Ensi\LaravelAuditing\LaravelAuditingServiceProvider::class`
 
 ## Использование
 
@@ -14,8 +14,8 @@ Opiniated fork of [owen-it/laravel-auditing](https://github.com/owen-it/laravel-
 Чтобы включить логирование для конкретной модели надо добавить ей трейт `SupportsAudit` и интерфейс `Auditable`
 
 ```php
-use Greensight\LaravelAuditing\Contracts\Auditable;
-use Greensight\LaravelAuditing\SupportsAudit;
+use Ensi\LaravelAuditing\Contracts\Auditable;
+use Ensi\LaravelAuditing\SupportsAudit;
 
 class Something extends Model implements Auditable {
     use SupportsAudit;
@@ -24,7 +24,7 @@ class Something extends Model implements Auditable {
 ```
 
 В случае, если мы меняем данные дочерних с логической точки зрения моделей и хотим чтобы в истории это изменение проходило под родительской моделью, необходимо в транзакции до изменения данных задать корневую сущность (т.е модель).
-Делается это через фасад `Transaction` или менеджер `\\Greensight\\LaravelAuditing\\Transactions\\ExtendedTransactionManager` 
+Делается это через фасад `Transaction` или менеджер `\\Ensi\\LaravelAuditing\\Transactions\\ExtendedTransactionManager` 
 
 ```php
 DB::transaction(function () {
@@ -34,10 +34,10 @@ DB::transaction(function () {
 });
 ```
 
-Для добавления в историю данных о том кто произвел изменения (конкретный пользователь, или, например, консольная команда) опять же нужно это сделать до изменения данных, но уже через фасад `Subject` или инъекцию `\\Greensight\\LaravelAuditing\\Resolvers\\SubjectManager`
+Для добавления в историю данных о том кто произвел изменения (конкретный пользователь, или, например, консольная команда) опять же нужно это сделать до изменения данных, но уже через фасад `Subject` или инъекцию `\\Ensi\\LaravelAuditing\\Resolvers\\SubjectManager`
 
 ```php
-Subject::attach($subject); // $subject - объект реализующий Greensight\LaravelAuditing\Contracts
+Subject::attach($subject); // $subject - объект реализующий Ensi\LaravelAuditing\Contracts
 ```
 
 Субъект не отвязывается после завершения транзакции. 
@@ -46,7 +46,7 @@ Subject::attach($subject); // $subject - объект реализующий Gre
 При обработке http запросов, можно задавать субъекта в middleware. В консольных командах и
 обработчиках очереди событий переназначать в процессе выполнения.
 
-Субъектом может являться любая сущность, поддерживающая интерфейс `\Greensight\LaravelAuditing\Contracts\Principal`.
+Субъектом может являться любая сущность, поддерживающая интерфейс `\Ensi\LaravelAuditing\Contracts\Principal`.
 Если субъектом является выполняемое задание, например, импорт из файла, то оно может возвращать идентификатор
 пользователя, создавшего задание в методе `getUserIdentifier()`, а в качестве наименования возвращать имя
 импортируемого файла.

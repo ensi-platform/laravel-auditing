@@ -1,6 +1,6 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Exceptions;
+namespace Ensi\LaravelAuditing\Exceptions;
 
 use Throwable;
 

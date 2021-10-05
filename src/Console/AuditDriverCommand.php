@@ -1,6 +1,6 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Console;
+namespace Ensi\LaravelAuditing\Console;
 
 use Illuminate\Console\GeneratorCommand;
 

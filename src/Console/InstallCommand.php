@@ -1,6 +1,6 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Console;
+namespace Ensi\LaravelAuditing\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Container\Container;
@@ -45,13 +45,13 @@ class InstallCommand extends Command
 
         $appConfig = file_get_contents(config_path('app.php'));
 
-        if (Str::contains($appConfig, 'Greensight\\LaravelAuditing\\LaravelAuditingServiceProvider::class')) {
+        if (Str::contains($appConfig, 'Ensi\\LaravelAuditing\\LaravelAuditingServiceProvider::class')) {
             return;
         }
 
         file_put_contents(config_path('app.php'), str_replace(
             "{$namespace}\\Providers\EventServiceProvider::class,".PHP_EOL,
-            "{$namespace}\\Providers\EventServiceProvider::class,".PHP_EOL."        Greensight\LaravelAuditing\LaravelAuditingServiceProvider::class,".PHP_EOL,
+            "{$namespace}\\Providers\EventServiceProvider::class,".PHP_EOL."        Ensi\LaravelAuditing\LaravelAuditingServiceProvider::class,".PHP_EOL,
             $appConfig
         ));
     }

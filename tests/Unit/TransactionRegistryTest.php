@@ -1,9 +1,9 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Tests\Unit;
+namespace Ensi\LaravelAuditing\Tests\Unit;
 
-use Greensight\LaravelAuditing\Tests\AuditingTestCase;
-use Greensight\LaravelAuditing\Transactions\TransactionRegistry;
+use Ensi\LaravelAuditing\Tests\AuditingTestCase;
+use Ensi\LaravelAuditing\Transactions\TransactionRegistry;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Events\TransactionBeginning;
 use Illuminate\Database\Events\TransactionCommitted;

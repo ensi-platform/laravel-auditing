@@ -1,9 +1,9 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Transactions;
+namespace Ensi\LaravelAuditing\Transactions;
 
 use Carbon\CarbonInterface;
-use Greensight\LaravelAuditing\Contracts\TransactionAttributes;
+use Ensi\LaravelAuditing\Contracts\TransactionAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Str;

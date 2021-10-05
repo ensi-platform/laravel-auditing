@@ -1,10 +1,10 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Tests\Unit;
+namespace Ensi\LaravelAuditing\Tests\Unit;
 
-use Greensight\LaravelAuditing\AuditableObserver;
-use Greensight\LaravelAuditing\Tests\AuditingTestCase;
-use Greensight\LaravelAuditing\Tests\Models\Article;
+use Ensi\LaravelAuditing\AuditableObserver;
+use Ensi\LaravelAuditing\Tests\AuditingTestCase;
+use Ensi\LaravelAuditing\Tests\Models\Article;
 
 class AuditableObserverTest extends AuditingTestCase
 {

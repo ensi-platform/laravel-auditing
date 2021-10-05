@@ -1,13 +1,13 @@
 <?php
 
-namespace Greensight\LaravelAuditing;
+namespace Ensi\LaravelAuditing;
 
-use Greensight\LaravelAuditing\Contracts\Auditable;
-use Greensight\LaravelAuditing\Contracts\AuditDriver;
-use Greensight\LaravelAuditing\Drivers\Database;
-use Greensight\LaravelAuditing\Events\Audited;
-use Greensight\LaravelAuditing\Events\Auditing;
-use Greensight\LaravelAuditing\Exceptions\AuditingException;
+use Ensi\LaravelAuditing\Contracts\Auditable;
+use Ensi\LaravelAuditing\Contracts\AuditDriver;
+use Ensi\LaravelAuditing\Drivers\Database;
+use Ensi\LaravelAuditing\Events\Audited;
+use Ensi\LaravelAuditing\Events\Auditing;
+use Ensi\LaravelAuditing\Exceptions\AuditingException;
 use Illuminate\Support\Manager;
 use InvalidArgumentException;
 
@@ -78,7 +78,7 @@ class Auditor extends Manager implements Contracts\Auditor
     /**
      * Create an instance of the Database audit driver.
      *
-     * @return \Greensight\LaravelAuditing\Drivers\Database
+     * @return \Ensi\LaravelAuditing\Drivers\Database
      */
     protected function createDatabaseDriver(): Database
     {
@@ -88,8 +88,8 @@ class Auditor extends Manager implements Contracts\Auditor
     /**
      * Fire the Auditing event.
      *
-     * @param \Greensight\LaravelAuditing\Contracts\Auditable   $model
-     * @param \Greensight\LaravelAuditing\Contracts\AuditDriver $driver
+     * @param \Ensi\LaravelAuditing\Contracts\Auditable   $model
+     * @param \Ensi\LaravelAuditing\Contracts\AuditDriver $driver
      *
      * @return bool
      */

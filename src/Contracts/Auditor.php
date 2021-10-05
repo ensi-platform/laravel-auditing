@@ -1,13 +1,13 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Contracts;
+namespace Ensi\LaravelAuditing\Contracts;
 
 interface Auditor
 {
     /**
      * Get an audit driver instance.
      *
-     * @param \Greensight\LaravelAuditing\Contracts\Auditable $model
+     * @param \Ensi\LaravelAuditing\Contracts\Auditable $model
      *
      * @return AuditDriver
      */
@@ -16,7 +16,7 @@ interface Auditor
     /**
      * Perform an audit.
      *
-     * @param \Greensight\LaravelAuditing\Contracts\Auditable $model
+     * @param \Ensi\LaravelAuditing\Contracts\Auditable $model
      *
      * @return void
      */

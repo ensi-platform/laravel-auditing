@@ -1,15 +1,15 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Facades;
+namespace Ensi\LaravelAuditing\Facades;
 
-use Greensight\LaravelAuditing\Resolvers\SubjectManager;
-use Greensight\LaravelAuditing\Contracts\Principal;
+use Ensi\LaravelAuditing\Resolvers\SubjectManager;
+use Ensi\LaravelAuditing\Contracts\Principal;
 use Illuminate\Support\Optional;
 use Illuminate\Support\Facades\Facade;
-use Greensight\LaravelAuditing\Contracts\UserResolver;
+use Ensi\LaravelAuditing\Contracts\UserResolver;
 
 /**
- * @method static void attach(\Greensight\LaravelAuditing\Contracts\Principal $subject)
+ * @method static void attach(\Ensi\LaravelAuditing\Contracts\Principal $subject)
  * @method static void detach()
  */
 class Subject extends Facade implements UserResolver

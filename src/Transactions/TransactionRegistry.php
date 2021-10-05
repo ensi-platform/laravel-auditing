@@ -1,9 +1,9 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Transactions;
+namespace Ensi\LaravelAuditing\Transactions;
 
 use Carbon\CarbonInterface;
-use Greensight\LaravelAuditing\Contracts\TransactionAttributes;
+use Ensi\LaravelAuditing\Contracts\TransactionAttributes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Events\ConnectionEvent;
 use Illuminate\Database\Events\TransactionBeginning;

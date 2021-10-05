@@ -1,6 +1,6 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Contracts;
+namespace Ensi\LaravelAuditing\Contracts;
 
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;

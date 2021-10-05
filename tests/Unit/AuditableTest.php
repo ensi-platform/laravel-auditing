@@ -1,21 +1,21 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Tests\Unit;
+namespace Ensi\LaravelAuditing\Tests\Unit;
 
 use Carbon\Carbon;
-use Greensight\LaravelAuditing\Contracts\Auditable;
-use Greensight\LaravelAuditing\Database\Factories\AuditFactory;
-use Greensight\LaravelAuditing\Encoders\Base64Encoder;
-use Greensight\LaravelAuditing\Exceptions\AuditableTransitionException;
-use Greensight\LaravelAuditing\Exceptions\AuditingException;
-use Greensight\LaravelAuditing\Facades\Subject;
-use Greensight\LaravelAuditing\Models\Audit;
-use Greensight\LaravelAuditing\Redactors\LeftRedactor;
-use Greensight\LaravelAuditing\Redactors\RightRedactor;
-use Greensight\LaravelAuditing\Tests\AuditingTestCase;
-use Greensight\LaravelAuditing\Tests\Models\ApiModel;
-use Greensight\LaravelAuditing\Tests\Models\Article;
-use Greensight\LaravelAuditing\Tests\Models\User;
+use Ensi\LaravelAuditing\Contracts\Auditable;
+use Ensi\LaravelAuditing\Database\Factories\AuditFactory;
+use Ensi\LaravelAuditing\Encoders\Base64Encoder;
+use Ensi\LaravelAuditing\Exceptions\AuditableTransitionException;
+use Ensi\LaravelAuditing\Exceptions\AuditingException;
+use Ensi\LaravelAuditing\Facades\Subject;
+use Ensi\LaravelAuditing\Models\Audit;
+use Ensi\LaravelAuditing\Redactors\LeftRedactor;
+use Ensi\LaravelAuditing\Redactors\RightRedactor;
+use Ensi\LaravelAuditing\Tests\AuditingTestCase;
+use Ensi\LaravelAuditing\Tests\Models\ApiModel;
+use Ensi\LaravelAuditing\Tests\Models\Article;
+use Ensi\LaravelAuditing\Tests\Models\User;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Testing\Assert;
 use Illuminate\Support\Facades\App;
@@ -864,7 +864,7 @@ class AuditableTest extends AuditingTestCase
     public function itFailsToTransitionWhenTheAuditAuditableTypeDoesNotMatchTheModelType()
     {
         $this->expectException(AuditableTransitionException::class);
-        $this->expectExceptionMessage('Expected Auditable type Greensight\LaravelAuditing\Tests\Models\Article, got Greensight\LaravelAuditing\Tests\Models\User instead');
+        $this->expectExceptionMessage('Expected Auditable type Ensi\LaravelAuditing\Tests\Models\Article, got Ensi\LaravelAuditing\Tests\Models\User instead');
 
         $audit = AuditFactory::new()->make([
             'auditable_type' => User::class,
@@ -1010,7 +1010,7 @@ class AuditableTest extends AuditingTestCase
             $model->transitionTo($incompatibleAudit);
         } catch (AuditableTransitionException $e) {
             $this->assertSame(
-                'Incompatibility between [Greensight\LaravelAuditing\Tests\Models\Article:1] and [Greensight\LaravelAuditing\Models\Audit:3]',
+                'Incompatibility between [Ensi\LaravelAuditing\Tests\Models\Article:1] and [Ensi\LaravelAuditing\Models\Audit:3]',
                 $e->getMessage()
             );
 

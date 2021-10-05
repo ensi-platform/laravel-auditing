@@ -1,17 +1,17 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Tests\Functional;
+namespace Ensi\LaravelAuditing\Tests\Functional;
 
 use Carbon\Carbon;
-use Greensight\LaravelAuditing\Database\Factories\ApiModelFactory;
-use Greensight\LaravelAuditing\Database\Factories\ArticleFactory;
-use Greensight\LaravelAuditing\Events\Auditing;
-use Greensight\LaravelAuditing\Exceptions\AuditingException;
-use Greensight\LaravelAuditing\Facades\Transaction;
-use Greensight\LaravelAuditing\Models\Audit;
-use Greensight\LaravelAuditing\Tests\AuditingTestCase;
-use Greensight\LaravelAuditing\Tests\Models\Article;
-use Greensight\LaravelAuditing\Tests\Models\User;
+use Ensi\LaravelAuditing\Database\Factories\ApiModelFactory;
+use Ensi\LaravelAuditing\Database\Factories\ArticleFactory;
+use Ensi\LaravelAuditing\Events\Auditing;
+use Ensi\LaravelAuditing\Exceptions\AuditingException;
+use Ensi\LaravelAuditing\Facades\Transaction;
+use Ensi\LaravelAuditing\Models\Audit;
+use Ensi\LaravelAuditing\Tests\AuditingTestCase;
+use Ensi\LaravelAuditing\Tests\Models\Article;
+use Ensi\LaravelAuditing\Tests\Models\User;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;

@@ -1,11 +1,11 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Tests\Models;
+namespace Ensi\LaravelAuditing\Tests\Models;
 
-use Greensight\LaravelAuditing\Contracts\Auditable;
-use Greensight\LaravelAuditing\Contracts\Principal;
-use Greensight\LaravelAuditing\Database\Factories\UserFactory;
-use Greensight\LaravelAuditing\SupportsAudit;
+use Ensi\LaravelAuditing\Contracts\Auditable;
+use Ensi\LaravelAuditing\Contracts\Principal;
+use Ensi\LaravelAuditing\Database\Factories\UserFactory;
+use Ensi\LaravelAuditing\SupportsAudit;
 use Illuminate\Database\Eloquent\Model;
 
 class User extends Model implements Auditable, Principal

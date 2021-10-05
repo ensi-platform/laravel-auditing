@@ -1,11 +1,11 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Drivers;
+namespace Ensi\LaravelAuditing\Drivers;
 
-use Greensight\LaravelAuditing\Contracts\Audit;
-use Greensight\LaravelAuditing\Contracts\Auditable;
-use Greensight\LaravelAuditing\Contracts\AuditDriver;
-use Greensight\LaravelAuditing\Transactions\TransactionRegistry;
+use Ensi\LaravelAuditing\Contracts\Audit;
+use Ensi\LaravelAuditing\Contracts\Auditable;
+use Ensi\LaravelAuditing\Contracts\AuditDriver;
+use Ensi\LaravelAuditing\Transactions\TransactionRegistry;
 use Illuminate\Support\Facades\Config;
 
 class Database implements AuditDriver
@@ -24,7 +24,7 @@ class Database implements AuditDriver
     {
         $fields = array_merge($model->toAudit(), $this->getTransactionAttributes());
 
-        $implementation = Config::get('laravel-auditing.implementation', \Greensight\LaravelAuditing\Models\Audit::class);
+        $implementation = Config::get('laravel-auditing.implementation', \Ensi\LaravelAuditing\Models\Audit::class);
 
         return call_user_func([$implementation, 'create'], $fields);
     }

@@ -1,8 +1,8 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Resolvers;
+namespace Ensi\LaravelAuditing\Resolvers;
 
-use Greensight\LaravelAuditing\Contracts\Principal;
+use Ensi\LaravelAuditing\Contracts\Principal;
 use Illuminate\Support\Optional;
 
 class SubjectManager

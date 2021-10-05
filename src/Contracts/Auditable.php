@@ -1,6 +1,6 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Contracts;
+namespace Ensi\LaravelAuditing\Contracts;
 
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
@@ -46,7 +46,7 @@ interface Auditable
     /**
      * Return data for an Audit.
      *
-     * @throws \Greensight\LaravelAuditing\Exceptions\AuditingException
+     * @throws \Ensi\LaravelAuditing\Exceptions\AuditingException
      *
      * @return array
      */
@@ -123,7 +123,7 @@ interface Auditable
      * @param Audit $audit
      * @param bool  $old
      *
-     * @throws \Greensight\LaravelAuditing\Exceptions\AuditableTransitionException
+     * @throws \Ensi\LaravelAuditing\Exceptions\AuditableTransitionException
      *
      * @return Auditable
      */

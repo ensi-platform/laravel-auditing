@@ -1,8 +1,8 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Tests\Functional;
+namespace Ensi\LaravelAuditing\Tests\Functional;
 
-use Greensight\LaravelAuditing\Tests\AuditingTestCase;
+use Ensi\LaravelAuditing\Tests\AuditingTestCase;
 use Illuminate\Testing\PendingCommand;
 
 class CommandTest extends AuditingTestCase

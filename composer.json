@@ -1,5 +1,5 @@
 {
-  "name": "greensight/laravel-auditing",
+  "name": "ensi/laravel-auditing",
   "description": "",
   "type": "library",
   "license": "MIT",
@@ -19,19 +19,19 @@
   },
   "autoload": {
     "psr-4": {
-      "Greensight\\LaravelAuditing\\": "src/"
+      "Ensi\\LaravelAuditing\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Greensight\\LaravelAuditing\\Tests\\": "tests/",
-      "Greensight\\LaravelAuditing\\Database\\Factories\\": "tests/database/factories/"
+      "Ensi\\LaravelAuditing\\Tests\\": "tests/",
+      "Ensi\\LaravelAuditing\\Database\\Factories\\": "tests/database/factories/"
     }
   },
   "extra": {
     "laravel": {
         "providers": [
-            "Greensight\\LaravelAuditing\\LaravelAuditingServiceProvider"
+            "Ensi\\LaravelAuditing\\LaravelAuditingServiceProvider"
         ]
     }
   },

@@ -1,10 +1,10 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Resolvers;
+namespace Ensi\LaravelAuditing\Resolvers;
 
 use Illuminate\Support\Facades\Request;
 
-class UserAgentResolver implements \Greensight\LaravelAuditing\Contracts\UserAgentResolver
+class UserAgentResolver implements \Ensi\LaravelAuditing\Contracts\UserAgentResolver
 {
     /**
      * {@inheritdoc}

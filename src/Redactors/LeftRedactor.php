@@ -1,8 +1,8 @@
 <?php
 
-namespace Greensight\LaravelAuditing\Redactors;
+namespace Ensi\LaravelAuditing\Redactors;
 
-class LeftRedactor implements \Greensight\LaravelAuditing\Contracts\AttributeRedactor
+class LeftRedactor implements \Ensi\LaravelAuditing\Contracts\AttributeRedactor
 {
     /**
      * {@inheritdoc}

@@ -1,15 +1,15 @@
 <?php
 
-namespace Greensight\LaravelAuditing;
+namespace Ensi\LaravelAuditing;
 
-use Greensight\LaravelAuditing\Console\AuditDriverCommand;
-use Greensight\LaravelAuditing\Console\InstallCommand;
-use Greensight\LaravelAuditing\Contracts\Auditor;
-use Greensight\LaravelAuditing\Drivers\Database;
-use Greensight\LaravelAuditing\Facades\Subject;
-use Greensight\LaravelAuditing\Facades\Transaction;
-use Greensight\LaravelAuditing\Resolvers\SubjectManager;
-use Greensight\LaravelAuditing\Transactions\TransactionRegistry;
+use Ensi\LaravelAuditing\Console\AuditDriverCommand;
+use Ensi\LaravelAuditing\Console\InstallCommand;
+use Ensi\LaravelAuditing\Contracts\Auditor;
+use Ensi\LaravelAuditing\Drivers\Database;
+use Ensi\LaravelAuditing\Facades\Subject;
+use Ensi\LaravelAuditing\Facades\Transaction;
+use Ensi\LaravelAuditing\Resolvers\SubjectManager;
+use Ensi\LaravelAuditing\Transactions\TransactionRegistry;
 use Illuminate\Database\Events\TransactionBeginning;
 use Illuminate\Database\Events\TransactionCommitted;
 use Illuminate\Database\Events\TransactionRolledBack;
@@ -54,7 +54,7 @@ class LaravelAuditingServiceProvider extends ServiceProvider
 
 
         $this->app->singleton(Auditor::class, function (Application $app) {
-            return new \Greensight\LaravelAuditing\Auditor($app);
+            return new \Ensi\LaravelAuditing\Auditor($app);
         });
 
         $this->app->singleton(SubjectManager::class);
