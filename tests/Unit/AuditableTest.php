@@ -16,6 +16,7 @@ use Ensi\LaravelAuditing\Tests\AuditingTestCase;
 use Ensi\LaravelAuditing\Tests\Models\ApiModel;
 use Ensi\LaravelAuditing\Tests\Models\Article;
 use Ensi\LaravelAuditing\Tests\Models\User;
+use Ensi\LaravelAuditing\Tests\Models\VirtualUser;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Testing\Assert;
 use Illuminate\Support\Facades\App;
@@ -24,6 +25,8 @@ use ReflectionClass;
 
 class AuditableTest extends AuditingTestCase
 {
+    private const AUDIT_FIELDS_COUNT = 13;
+
     /**
      * {@inheritdoc}
      */
@@ -401,7 +404,7 @@ class AuditableTest extends AuditingTestCase
 
         $model->setAuditEvent('created');
 
-        $this->assertCount(12, $auditData = $model->toAudit());
+        $this->assertCount(self::AUDIT_FIELDS_COUNT, $auditData = $model->toAudit());
 
         Assert::assertArraySubset([
             'old_values' => [],
@@ -442,7 +445,7 @@ class AuditableTest extends AuditingTestCase
 
         $model->setAuditEvent('created');
 
-        $this->assertCount(12, $auditData = $model->toAudit());
+        $this->assertCount(self::AUDIT_FIELDS_COUNT, $auditData = $model->toAudit());
 
         Assert::assertArraySubset([
             'old_values' => [],
@@ -460,6 +463,105 @@ class AuditableTest extends AuditingTestCase
             'url'            => 'console',
             'ip_address'     => '127.0.0.1',
             'user_agent'     => 'Symfony',
+            'user_id'        => null,
+            'tags'           => null,
+        ], $auditData, true);
+    }
+
+    /**
+     * @dataProvider userResolverProvider
+     * @test
+     */
+    public function itReturnsTheAuditDataIncludingUserId(
+        string $guard,
+        string $driver,
+        ?string $id
+    ) {
+        $this->app['config']->set('laravel-auditing.user.guards', [$guard]);
+
+        $user = User::factory()->create();
+        $this->actingAs($user, $driver);
+        $now = Carbon::now();
+
+        $model = Article::factory()->make([
+            'title'        => 'How To Audit Eloquent Models',
+            'content'      => 'First step: install the laravel-auditing package.',
+            'reviewed'     => 1,
+            'published_at' => $now,
+        ]);
+
+        $model->setAuditEvent('created');
+
+        $this->assertCount(self::AUDIT_FIELDS_COUNT, $auditData = $model->toAudit());
+
+        Assert::assertArraySubset([
+            'old_values' => [],
+            'new_values' => [
+                'title'        => 'How To Audit Eloquent Models',
+                'content'      => 'First step: install the laravel-auditing package.',
+                'reviewed'     => 1,
+                'published_at' => $now->toDateTimeString(),
+            ],
+            'event'          => 'created',
+            'auditable_id'   => null,
+            'auditable_type' => Article::class,
+            'subject_id'     => null,
+            'subject_type'   => null,
+            'url'            => 'console',
+            'ip_address'     => '127.0.0.1',
+            'user_agent'     => 'Symfony',
+            'user_id'        => $id,
+            'tags'           => null,
+        ], $auditData, true);
+    }
+
+    public function userResolverProvider(): array
+    {
+        return [
+            ['api', 'web', null],
+            ['web', 'api', null],
+            ['api', 'api', '1'],
+            ['web', 'web', '1'],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function itReturnsTheAuditDataIncludingVirtualUserId()
+    {
+        $this->actingAs(new VirtualUser(), 'api');
+
+        $now = Carbon::now();
+
+        $model = Article::factory()->make([
+            'title'        => 'How To Audit Eloquent Models',
+            'content'      => 'First step: install the laravel-auditing package.',
+            'reviewed'     => 1,
+            'published_at' => $now,
+        ]);
+
+        $model->setAuditEvent('created');
+
+        $this->assertCount(self::AUDIT_FIELDS_COUNT, $auditData = $model->toAudit());
+
+        Assert::assertArraySubset([
+            'old_values' => [],
+            'new_values' => [
+                'title'        => 'How To Audit Eloquent Models',
+                'content'      => 'First step: install the laravel-auditing package.',
+                'reviewed'     => 1,
+                'published_at' => $now->toDateTimeString(),
+            ],
+            'event'          => 'created',
+            'auditable_id'   => null,
+            'auditable_type' => Article::class,
+            'subject_id'     => null,
+            'subject_type'   => null,
+            'url'            => 'console',
+            'ip_address'     => '127.0.0.1',
+            'user_agent'     => 'Symfony',
+            'user_id'        => VirtualUser::ID,
             'tags'           => null,
         ], $auditData, true);
     }
@@ -491,7 +593,7 @@ class AuditableTest extends AuditingTestCase
 
         $model->setAuditEvent('created');
 
-        $this->assertCount(12, $auditData = $model->toAudit());
+        $this->assertCount(self::AUDIT_FIELDS_COUNT, $auditData = $model->toAudit());
 
         Assert::assertArraySubset([
             'old_values' => [],
@@ -605,7 +707,7 @@ class AuditableTest extends AuditingTestCase
 
         $model->setAuditEvent('created');
 
-        $this->assertCount(12, $auditData = $model->toAudit());
+        $this->assertCount(self::AUDIT_FIELDS_COUNT, $auditData = $model->toAudit());
 
         Assert::assertArraySubset([
             'new_values' => [

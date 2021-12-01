@@ -4,6 +4,7 @@ namespace Ensi\LaravelAuditing\Resolvers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Optional;
 
 class UserResolver implements \Ensi\LaravelAuditing\Contracts\UserResolver
 {
@@ -19,8 +20,10 @@ class UserResolver implements \Ensi\LaravelAuditing\Contracts\UserResolver
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                return Auth::guard($guard)->user();
+                return (string)Auth::guard($guard)->user()->getAuthIdentifier();
             }
         }
+
+        return null;
     }
 }

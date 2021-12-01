@@ -7,7 +7,7 @@ interface UserResolver
     /**
      * Resolve the User.
      *
-     * @return mixed|null
+     * @return string|null
      */
     public static function resolve();
 }

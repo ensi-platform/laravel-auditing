@@ -37,7 +37,7 @@ return [
     |
     */
     'resolver' => [
-        'user'       => Ensi\LaravelAuditing\Facades\Subject::class,
+        'user'       => Ensi\LaravelAuditing\Resolvers\UserResolver::class,
         'ip_address' => Ensi\LaravelAuditing\Resolvers\IpAddressResolver::class,
         'user_agent' => Ensi\LaravelAuditing\Resolvers\UserAgentResolver::class,
         'url'        => Ensi\LaravelAuditing\Resolvers\UrlResolver::class,

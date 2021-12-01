@@ -2,17 +2,16 @@
 
 namespace Ensi\LaravelAuditing\Facades;
 
-use Ensi\LaravelAuditing\Resolvers\SubjectManager;
 use Ensi\LaravelAuditing\Contracts\Principal;
-use Illuminate\Support\Optional;
+use Ensi\LaravelAuditing\Resolvers\SubjectManager;
 use Illuminate\Support\Facades\Facade;
-use Ensi\LaravelAuditing\Contracts\UserResolver;
+use Illuminate\Support\Optional;
 
 /**
  * @method static void attach(\Ensi\LaravelAuditing\Contracts\Principal $subject)
  * @method static void detach()
  */
-class Subject extends Facade implements UserResolver
+class Subject extends Facade
 {
     protected static function getFacadeAccessor(): string
     {

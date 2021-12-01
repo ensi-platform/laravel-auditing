@@ -2,6 +2,8 @@
 
 namespace Ensi\LaravelAuditing;
 
+use Ensi\LaravelAuditing\Contracts\Principal;
+use Ensi\LaravelAuditing\Facades\Subject;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
@@ -290,7 +292,7 @@ trait SupportsAudit
 
         $tags = implode(',', $this->generateTags());
 
-        $user = $this->resolveUser();
+        $subject = $this->resolveSubject();
 
         return $this->transformAudit([
             'old_values'         => $old,
@@ -299,11 +301,12 @@ trait SupportsAudit
             'event'              => $this->auditEvent,
             'auditable_id'       => $this->getKey(),
             'auditable_type'     => $this->getMorphClass(),
-            'subject_id'         => $user ? $user->getAuthIdentifier() : null,
-            'subject_type'       => $user ? $user->getMorphClass() : null,
+            'subject_id'         => $subject?->getAuthIdentifier(),
+            'subject_type'       => $subject?->getMorphClass(),
             'url'                => $this->resolveUrl(),
             'ip_address'         => $this->resolveIpAddress(),
             'user_agent'         => $this->resolveUserAgent(),
+            'user_id'            => $this->resolveUser(),
             'tags'               => empty($tags) ? null : $tags,
         ]);
     }
@@ -326,6 +329,16 @@ trait SupportsAudit
     }
 
     /**
+     * Resolve the Subject.
+     *
+     * @return Principal|null
+     */
+    protected function resolveSubject()
+    {
+        return Subject::resolve();
+    }
+
+    /**
      * Resolve the User.
      *
      * @throws AuditingException
@@ -336,11 +349,11 @@ trait SupportsAudit
     {
         $userResolver = Config::get('laravel-auditing.resolver.user');
 
-        if (is_subclass_of($userResolver, UserResolver::class)) {
-            return call_user_func([$userResolver, 'resolve']);
+        if (!is_subclass_of($userResolver, UserResolver::class)) {
+            throw new AuditingException('Invalid UserResolver implementation');
         }
 
-        throw new AuditingException('Invalid UserResolver implementation');
+        return call_user_func([$userResolver, 'resolve']);
     }
 
     /**

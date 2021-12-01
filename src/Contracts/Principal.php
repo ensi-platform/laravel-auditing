@@ -29,10 +29,8 @@ interface Principal
 
     /**
      * Возвращает идентификатор пользователя, если есть.
-     * Для самого пользователя getAuthIdentifier и getUserIdentifier должны вернуть
-     * одно и то же значение.
      *
-     * @return int|null
+     * @return mixed
      */
-    public function getUserIdentifier(): ?int;
+    public function getUserIdentifier();
 }

@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 |--------------------------------------------------------------------------
 |
 */
+
+/**
+ * @method User create(array $extra = [])
+ */
 class UserFactory extends Factory
 {
     protected $model = User::class;

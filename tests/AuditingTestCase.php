@@ -7,6 +7,7 @@ use Ensi\LaravelAuditing\Facades\Subject;
 use Ensi\LaravelAuditing\Resolvers\IpAddressResolver;
 use Ensi\LaravelAuditing\Resolvers\UrlResolver;
 use Ensi\LaravelAuditing\Resolvers\UserAgentResolver;
+use Ensi\LaravelAuditing\Resolvers\UserResolver;
 use Orchestra\Testbench\TestCase;
 
 class AuditingTestCase extends TestCase
@@ -23,6 +24,10 @@ class AuditingTestCase extends TestCase
             'database' => ':memory:',
             'prefix'   => '',
         ]);
+        $app['config']->set('auth.guards.api', [
+            'driver' => 'session',
+            'provider' => 'users',
+        ]);
 
         // Audit
         $app['config']->set('laravel-auditing.drivers.database.connection', 'testing');
@@ -31,7 +36,7 @@ class AuditingTestCase extends TestCase
             'web',
             'api',
         ]);
-        $app['config']->set('laravel-auditing.resolver.user', Subject::class);
+        $app['config']->set('laravel-auditing.resolver.user', UserResolver::class);
         $app['config']->set('laravel-auditing.resolver.url', UrlResolver::class);
         $app['config']->set('laravel-auditing.resolver.ip_address', IpAddressResolver::class);
         $app['config']->set('laravel-auditing.resolver.user_agent', UserAgentResolver::class);
