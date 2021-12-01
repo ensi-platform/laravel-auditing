@@ -6,11 +6,13 @@ use Ensi\LaravelAuditing\Contracts\Auditable;
 use Ensi\LaravelAuditing\Contracts\Principal;
 use Ensi\LaravelAuditing\Database\Factories\UserFactory;
 use Ensi\LaravelAuditing\SupportsAudit;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
-class User extends Model implements Auditable, Principal
+class User extends Model implements Auditable, Principal, Authenticatable
 {
     use SupportsAudit;
+    use \Illuminate\Auth\Authenticatable;
 
     /**
      * {@inheritdoc}

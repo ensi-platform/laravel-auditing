@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $root_entity_id        Корневая сущность
  * @property string $subject_type
  * @property int $subject_id            Субъект доступа
+ * @property string|null $user_id       Идентификатор пользователя
  *
  * @property \Carbon\CarbonInterface $created_at
  * @property \Carbon\CarbonInterface $updated_at
