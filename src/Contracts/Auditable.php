@@ -118,6 +118,13 @@ interface Auditable
     public function generateTags(): array;
 
     /**
+     * Return extra information.
+     *
+     * @return array|null
+     */
+    public function getAuditExtra(): ?array;
+
+    /**
      * Transition to another model state from an Audit.
      *
      * @param Audit $audit

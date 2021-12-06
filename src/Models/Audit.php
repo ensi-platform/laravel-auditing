@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $subject_type
  * @property int $subject_id            Субъект доступа
  * @property string|null $user_id       Идентификатор пользователя
+ * @property array|null $extra          Дополнительная информация
  *
  * @property \Carbon\CarbonInterface $created_at
  * @property \Carbon\CarbonInterface $updated_at
@@ -53,6 +54,7 @@ class Audit extends Model implements \Ensi\LaravelAuditing\Contracts\Audit
         'new_values'   => 'json',
         // Note: Please do not add 'auditable_id' in here, as it will break non-integer PK models
         'state'        => 'json',
+        'extra'        => 'json',
     ];
 
     protected $dates = ['transaction_time'];

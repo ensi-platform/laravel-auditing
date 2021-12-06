@@ -11,6 +11,7 @@ use Ensi\LaravelAuditing\Redactors\LeftRedactor;
 use Ensi\LaravelAuditing\Tests\AuditingTestCase;
 use Ensi\LaravelAuditing\Tests\Models\Article;
 use Ensi\LaravelAuditing\Tests\Models\User;
+use Ensi\LaravelAuditing\Tests\Models\VirtualUser;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithTime;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Testing\Assert;
@@ -18,6 +19,9 @@ use Illuminate\Testing\Assert;
 class AuditTest extends AuditingTestCase
 {
     use InteractsWithTime;
+
+    private const AUDIT_FIELDS_COUNT = 20;
+    private const AUDIT_META_FIELDS_COUNT = 16;
 
     /**
      * @group Audit::resolveData
@@ -37,7 +41,7 @@ class AuditTest extends AuditingTestCase
 
         $audit = $article->audits()->first();
 
-        $this->assertCount(18, $resolvedData = $audit->resolveData());
+        $this->assertCount(self::AUDIT_FIELDS_COUNT, $resolvedData = $audit->resolveData());
 
         Assert::assertArraySubset([
             'audit_id'         => 1,
@@ -52,6 +56,7 @@ class AuditTest extends AuditingTestCase
             'new_content'      => 'First step: install the laravel-auditing package.',
             'new_published_at' => $now->toDateTimeString(),
             'new_reviewed'     => 1,
+            'extra'            => ['year' => $now->year],
         ], $resolvedData, true);
     }
 
@@ -81,7 +86,7 @@ class AuditTest extends AuditingTestCase
 
         $audit = $article->audits()->first();
 
-        $this->assertCount(20, $resolvedData = $audit->resolveData());
+        $this->assertCount(self::AUDIT_FIELDS_COUNT + 1, $resolvedData = $audit->resolveData());
 
         Assert::assertArraySubset([
             'audit_id'         => 2,
@@ -98,6 +103,36 @@ class AuditTest extends AuditingTestCase
             'new_reviewed'     => 1,
             'subject_id'       => (string)$user->getKey(),
         ], $resolvedData, true);
+    }
+
+    /**
+     * @test
+     */
+    public function itResolvesAuditDataIncludingUserId()
+    {
+        $this->actingAs(new VirtualUser(), 'api');
+
+        $article = Article::factory()->create();
+
+        $audit = $article->audits()->first();
+
+        Assert::assertArraySubset([
+            'user_id' => VirtualUser::ID,
+        ], $audit->resolveData(), true);
+    }
+
+    /**
+     * @test
+     */
+    public function itResolvesAuditDataIncludingDefaultExtra()
+    {
+        $article = Article::factory()->create();
+
+        $audit = $article->audits()->first();
+
+        Assert::assertArraySubset([
+            'extra' => null,
+        ], $audit->resolveData(), true);
     }
 
     /**
@@ -122,7 +157,7 @@ class AuditTest extends AuditingTestCase
         ])->audits()->first();
 
         // Resolve data, making it available to the getDataValue() method
-        $this->assertCount(18, $audit->resolveData());
+        $this->assertCount(self::AUDIT_FIELDS_COUNT, $audit->resolveData());
 
         // Mutate value
         $this->assertSame('HOW TO AUDIT ELOQUENT MODELS', $audit->getDataValue('new_title'));
@@ -148,7 +183,7 @@ class AuditTest extends AuditingTestCase
     {
         $audit = Article::factory()->create()->audits()->first();
 
-        $this->assertCount(14, $metadata = $audit->getMetadata());
+        $this->assertCount(self::AUDIT_META_FIELDS_COUNT, $metadata = $audit->getMetadata());
 
         Assert::assertArraySubset([
             'audit_id'         => 1,
@@ -179,7 +214,7 @@ class AuditTest extends AuditingTestCase
 
         $audit = Article::factory()->create()->audits()->first();
 
-        $this->assertCount(16, $metadata = $audit->getMetadata());
+        $this->assertCount(self::AUDIT_META_FIELDS_COUNT + 1, $metadata = $audit->getMetadata());
 
         Assert::assertArraySubset([
             'audit_id'         => 2,
@@ -222,7 +257,9 @@ class AuditTest extends AuditingTestCase
     "subject_id": null,
     "subject_type": null,
     "transaction_uid": null,
-    "transaction_time": "$now"
+    "transaction_time": "$now",
+    "user_id": null,
+    "extra": null
 }
 EOF;
 
@@ -268,8 +305,9 @@ EOF;
     "subject_type": "Ensi\\\\LaravelAuditing\\\\Tests\\\\Models\\\\User",
     "transaction_uid": null,
     "transaction_time": "$now",
-    "subject_name": "Rick",
-    "user_id": $userId
+    "user_id": $userId,
+    "extra": null,
+    "subject_name": "Rick"
 }
 EOF;
 

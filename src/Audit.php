@@ -85,11 +85,16 @@ trait Audit
             'subject_type'      => $this->getAttribute('subject_type'),
             'transaction_uid'   => $this->getAttribute('transaction_uid'),
             'transaction_time'  => $this->serializeDate($this->transaction_time ?? now()),
+            'user_id'           => $this->user_id,
+            'extra'             => $this->extra,
         ];
 
         if ($this->subject && ($this->subject instanceof Principal)) {
             $this->data['subject_name'] = $this->subject->getName();
-            $this->data['user_id'] = $this->subject->getUserIdentifier();
+
+            if (!isset($this->data['user_id'])) {
+                $this->data['user_id'] = $this->subject->getUserIdentifier();
+            }
         }
 
         $this->metadata = array_keys($this->data);

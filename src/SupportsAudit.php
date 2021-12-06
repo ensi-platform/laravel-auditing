@@ -308,6 +308,7 @@ trait SupportsAudit
             'user_agent'         => $this->resolveUserAgent(),
             'user_id'            => $this->resolveUser(),
             'tags'               => empty($tags) ? null : $tags,
+            'extra'              => $this->getAuditExtra(),
         ]);
     }
 
@@ -326,6 +327,11 @@ trait SupportsAudit
     public function transformAudit(array $data): array
     {
         return $data;
+    }
+
+    public function getAuditExtra(): ?array
+    {
+        return null;
     }
 
     /**
