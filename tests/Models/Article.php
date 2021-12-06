@@ -2,12 +2,16 @@
 
 namespace Ensi\LaravelAuditing\Tests\Models;
 
+use Carbon\CarbonInterface;
 use Ensi\LaravelAuditing\Database\Factories\ArticleFactory;
 use Ensi\LaravelAuditing\SupportsAudit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Ensi\LaravelAuditing\Contracts\Auditable;
 
+/**
+ * @property CarbonInterface|null $published_at
+ */
 class Article extends Model implements Auditable
 {
     use SupportsAudit;
@@ -47,6 +51,13 @@ class Article extends Model implements Auditable
     public function getTitleAttribute(string $value): string
     {
         return strtoupper($value);
+    }
+
+    public function getAuditExtra(): ?array
+    {
+        return $this->published_at
+            ? ['year' => $this->published_at->year]
+            : null;
     }
 
     public static function factory(): ArticleFactory

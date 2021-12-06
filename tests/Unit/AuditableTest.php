@@ -25,7 +25,7 @@ use ReflectionClass;
 
 class AuditableTest extends AuditingTestCase
 {
-    private const AUDIT_FIELDS_COUNT = 13;
+    private const AUDIT_FIELDS_COUNT = 14;
 
     /**
      * {@inheritdoc}
@@ -564,6 +564,47 @@ class AuditableTest extends AuditingTestCase
             'user_id'        => VirtualUser::ID,
             'tags'           => null,
         ], $auditData, true);
+    }
+
+    /**
+     * @test
+     */
+    public function itReturnsTheAuditDataIncludingExtra()
+    {
+        $now = Carbon::now();
+
+        $model = Article::factory()->make([
+            'title'        => 'How To Audit Eloquent Models',
+            'content'      => 'First step: install the laravel-auditing package.',
+            'reviewed'     => 1,
+            'published_at' => $now,
+        ]);
+
+        $model->setAuditEvent('created');
+
+        $this->assertCount(self::AUDIT_FIELDS_COUNT, $auditData = $model->toAudit());
+
+        Assert::assertArraySubset([
+            'extra' => [
+                'year' => $now->year,
+            ],
+            'event'          => 'created',
+            'auditable_id'   => null,
+            'auditable_type' => Article::class,
+        ], $auditData, true);
+    }
+
+    /**
+     * @test
+     */
+    public function itReturnsTheDefaultExtra()
+    {
+        $model = Article::factory()->make();
+        $model->setAuditEvent('created');
+
+        Assert::assertArraySubset([
+            'extra' => null,
+        ], $model->toAudit(), true);
     }
 
     /**
