@@ -79,6 +79,12 @@ class LaravelAuditingServiceProvider extends ServiceProvider
                     sprintf('migrations/%s_create_audits_table.php', date('Y_m_d_His'))
                 ),
             ], 'migrations');
+
+            $this->publishes([
+                __DIR__.'/../database/migrations/audits_extra.stub' => database_path(
+                    sprintf('migrations/%s_add_audits_extra.php', date('Y_m_d_His'))
+                ),
+            ], 'migrations-0.3');
         }
     }
 
