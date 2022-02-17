@@ -23,5 +23,4 @@ class ApiModelFactory extends Factory
             'published_at' => null,
         ];
     }
-
 }

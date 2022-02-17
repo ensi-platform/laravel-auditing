@@ -18,9 +18,9 @@ use Ensi\LaravelAuditing\Tests\Models\Article;
 use Ensi\LaravelAuditing\Tests\Models\User;
 use Ensi\LaravelAuditing\Tests\Models\VirtualUser;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Testing\Assert;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
+use Illuminate\Testing\Assert;
 use ReflectionClass;
 
 class AuditableTest extends AuditingTestCase
@@ -431,7 +431,8 @@ class AuditableTest extends AuditingTestCase
      * @group Auditable::toAudit
      * @test
      */
-    public function itReturnsTheAuditDataIncludingSubjectAttributes() {
+    public function itReturnsTheAuditDataIncludingSubjectAttributes()
+    {
         $user = User::factory()->create();
         Subject::attach($user);
         $now = Carbon::now();

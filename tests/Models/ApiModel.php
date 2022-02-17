@@ -2,11 +2,11 @@
 
 namespace Ensi\LaravelAuditing\Tests\Models;
 
+use Ensi\LaravelAuditing\Contracts\Auditable;
 use Ensi\LaravelAuditing\Database\Factories\ApiModelFactory;
 use Ensi\LaravelAuditing\SupportsAudit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Ensi\LaravelAuditing\Contracts\Auditable;
 
 class ApiModel extends Model implements Auditable
 {

@@ -3,7 +3,6 @@
 namespace Ensi\LaravelAuditing\Tests;
 
 use Ensi\LaravelAuditing\LaravelAuditingServiceProvider;
-use Ensi\LaravelAuditing\Facades\Subject;
 use Ensi\LaravelAuditing\Resolvers\IpAddressResolver;
 use Ensi\LaravelAuditing\Resolvers\UrlResolver;
 use Ensi\LaravelAuditing\Resolvers\UserAgentResolver;

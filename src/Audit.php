@@ -3,12 +3,12 @@
 namespace Ensi\LaravelAuditing;
 
 use DateTimeInterface;
-use Ensi\LaravelAuditing\Contracts\Principal;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Database\Eloquent\Model;
 use Ensi\LaravelAuditing\Contracts\AttributeEncoder;
+use Ensi\LaravelAuditing\Contracts\Principal;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Str;
 
 trait Audit
 {
