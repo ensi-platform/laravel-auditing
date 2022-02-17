@@ -100,7 +100,7 @@ class AuditTest extends AuditingTestCase
             'new_content'      => 'First step: install the laravel-auditing package.',
             'new_published_at' => $now->toDateTimeString(),
             'new_reviewed'     => 1,
-            'subject_id'       => (string)$user->getKey(),
+            'subject_id'       => $user->getKey(),
         ], $resolvedData, true);
     }
 
@@ -224,7 +224,7 @@ class AuditTest extends AuditingTestCase
             'audit_tags'       => null,
             'audit_created_at' => $audit->created_at->toJSON(),
             'audit_updated_at' => $audit->updated_at->toJSON(),
-            'subject_id'       => (string)$user->getKey(),
+            'subject_id'       => $user->getKey(),
         ], $metadata, true);
     }
 
@@ -300,7 +300,7 @@ EOF;
     "audit_updated_at": "$now",
     "root_entity_id": null,
     "root_entity_type": null,
-    "subject_id": "$userId",
+    "subject_id": $userId,
     "subject_type": "Ensi\\\\LaravelAuditing\\\\Tests\\\\Models\\\\User",
     "transaction_uid": null,
     "transaction_time": "$now",

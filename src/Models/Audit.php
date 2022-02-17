@@ -55,6 +55,7 @@ class Audit extends Model implements \Ensi\LaravelAuditing\Contracts\Audit
         // Note: Please do not add 'auditable_id' in here, as it will break non-integer PK models
         'state'        => 'json',
         'extra'        => 'json',
+        'subject_id'   => 'int',
     ];
 
     protected $dates = ['transaction_time'];
