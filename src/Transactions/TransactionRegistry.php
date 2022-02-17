@@ -64,17 +64,17 @@ class TransactionRegistry
 
     public function onCommit(TransactionCommitted $event): void
     {
-        $this->executeIfTransactionFinished($event, fn($holder) => $holder->commit());
+        $this->executeIfTransactionFinished($event, fn ($holder) => $holder->commit());
     }
 
     public function onRollback(TransactionRolledBack $event): void
     {
-        $this->executeIfTransactionFinished($event, fn($holder) => $holder->rollback());
+        $this->executeIfTransactionFinished($event, fn ($holder) => $holder->rollback());
     }
 
     private function getOrCreateHolder(string $connectionName): TransactionAttributesHolder
     {
-        return $this->holders->get($connectionName, fn() => $this->createHolder($connectionName));
+        return $this->holders->get($connectionName, fn () => $this->createHolder($connectionName));
     }
 
     private function createHolder(string $connectionName): TransactionAttributesHolder

@@ -45,9 +45,11 @@ class TransactionTest extends AuditingTestCase
     public function itHandlesRollback(): void
     {
         $uid = null;
+
         try {
             DB::transaction(function () use (&$uid) {
                 $uid = Transaction::uid();
+
                 throw new RuntimeException('Failed');
             });
         } catch (RuntimeException) {

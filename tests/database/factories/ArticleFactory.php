@@ -23,5 +23,4 @@ class ArticleFactory extends Factory
             'reviewed'     => $this->faker->randomElement([0, 1]),
         ];
     }
-
 }

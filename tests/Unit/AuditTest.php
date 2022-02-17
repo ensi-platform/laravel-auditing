@@ -13,7 +13,6 @@ use Ensi\LaravelAuditing\Tests\Models\Article;
 use Ensi\LaravelAuditing\Tests\Models\User;
 use Ensi\LaravelAuditing\Tests\Models\VirtualUser;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithTime;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Testing\Assert;
 
 class AuditTest extends AuditingTestCase

@@ -32,5 +32,4 @@ class VirtualUser implements Authenticatable
     public function getRememberTokenName()
     {
     }
-
 }

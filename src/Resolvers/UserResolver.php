@@ -4,7 +4,6 @@ namespace Ensi\LaravelAuditing\Resolvers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Optional;
 
 class UserResolver implements \Ensi\LaravelAuditing\Contracts\UserResolver
 {

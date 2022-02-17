@@ -2,21 +2,21 @@
 
 namespace Ensi\LaravelAuditing;
 
+use Ensi\LaravelAuditing\Contracts\AttributeEncoder;
+use Ensi\LaravelAuditing\Contracts\AttributeRedactor;
+use Ensi\LaravelAuditing\Contracts\IpAddressResolver;
 use Ensi\LaravelAuditing\Contracts\Principal;
+use Ensi\LaravelAuditing\Contracts\UrlResolver;
+use Ensi\LaravelAuditing\Contracts\UserAgentResolver;
+use Ensi\LaravelAuditing\Contracts\UserResolver;
+use Ensi\LaravelAuditing\Exceptions\AuditableTransitionException;
+use Ensi\LaravelAuditing\Exceptions\AuditingException;
 use Ensi\LaravelAuditing\Facades\Subject;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
-use Ensi\LaravelAuditing\Contracts\AttributeEncoder;
-use Ensi\LaravelAuditing\Contracts\AttributeRedactor;
-use Ensi\LaravelAuditing\Contracts\IpAddressResolver;
-use Ensi\LaravelAuditing\Contracts\UrlResolver;
-use Ensi\LaravelAuditing\Contracts\UserAgentResolver;
-use Ensi\LaravelAuditing\Contracts\UserResolver;
-use Ensi\LaravelAuditing\Exceptions\AuditableTransitionException;
-use Ensi\LaravelAuditing\Exceptions\AuditingException;
 
 trait SupportsAudit
 {
@@ -318,6 +318,7 @@ trait SupportsAudit
         foreach ($source as $attribute => $value) {
             $result[$attribute] = $this->modifyAttributeValue($attribute, $value);
         }
+
         return $result;
     }
 

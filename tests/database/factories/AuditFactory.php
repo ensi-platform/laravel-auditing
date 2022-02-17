@@ -36,5 +36,4 @@ class AuditFactory extends Factory
             'tags'           => implode(',', $this->faker->words(4)),
         ];
     }
-
 }

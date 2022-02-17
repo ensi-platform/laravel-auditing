@@ -3,11 +3,11 @@
 namespace Ensi\LaravelAuditing\Tests\Models;
 
 use Carbon\CarbonInterface;
+use Ensi\LaravelAuditing\Contracts\Auditable;
 use Ensi\LaravelAuditing\Database\Factories\ArticleFactory;
 use Ensi\LaravelAuditing\SupportsAudit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Ensi\LaravelAuditing\Contracts\Auditable;
 
 /**
  * @property CarbonInterface|null $published_at
