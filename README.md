@@ -55,6 +55,14 @@ Subject::attach($subject); // $subject - объект реализующий Ens
 
 Также в отличии от исходного пакета в истории сохраняются не только измененные поля, но и полное состояние объекта модели на момент изменения.
 
+## Contributing
+
+### Testing
+
+1. composer install
+2. npm i
+3. composer test
+
 ## Лицензия
 
 [The MIT License (MIT)](LICENSE.md).
