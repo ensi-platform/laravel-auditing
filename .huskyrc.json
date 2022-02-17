@@ -1,6 +1,6 @@
 {
    "hooks": {
       "pre-commit": ".git_hooks/pre-commit/lint-php.sh && .git_hooks/pre-commit/php-cs-fixer.sh",
-      "pre-push": ".git_hooks/pre-push/var-dump-checker.sh"
+      "pre-push": ".git_hooks/pre-push/composer-validate.sh && .git_hooks/pre-push/var-dump-checker.sh && .git_hooks/pre-push/test-code.sh"
    }
  }
