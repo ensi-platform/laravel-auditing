@@ -82,7 +82,7 @@ class LaravelAuditingServiceProvider extends ServiceProvider
 
             $this->publishes([
                 __DIR__.'/../database/migrations/audits_extra.stub' => database_path(
-                    sprintf('migrations/%s_add_audits_extra.php', date('Y_m_d_His'))
+                    sprintf('migrations/%s_push_audits_extra.php', date('Y_m_d_His'))
                 ),
             ], 'migrations-0.3');
         }
