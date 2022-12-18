@@ -459,6 +459,10 @@ trait SupportsAudit
      */
     protected function resolveAttributeGetter($event)
     {
+        if (blank($event)) {
+            return null;
+        }
+
         foreach ($this->getAuditEvents() as $key => $value) {
             $auditableEvent = is_int($key) ? $value : $key;
 
@@ -468,6 +472,8 @@ trait SupportsAudit
                 return is_int($key) ? sprintf('get%sEventAttributes', ucfirst($event)) : $value;
             }
         }
+
+        return null;
     }
 
     /**
