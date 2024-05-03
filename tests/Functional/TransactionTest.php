@@ -5,14 +5,11 @@ namespace Ensi\LaravelAuditing\Tests\Functional;
 use Ensi\LaravelAuditing\Database\Factories\ArticleFactory;
 use Ensi\LaravelAuditing\Facades\Transaction;
 use Ensi\LaravelAuditing\Tests\AuditingTestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use RuntimeException;
 
 class TransactionTest extends AuditingTestCase
 {
-    use RefreshDatabase;
-
     /**
      * @test
      */

@@ -10,6 +10,7 @@ use Ensi\LaravelAuditing\Exceptions\AuditingException;
 use Ensi\LaravelAuditing\Facades\Transaction;
 use Ensi\LaravelAuditing\Models\Audit;
 use Ensi\LaravelAuditing\Tests\AuditingTestCase;
+use Ensi\LaravelAuditing\Tests\Drivers\FakeDriver;
 use Ensi\LaravelAuditing\Tests\Models\Article;
 use Ensi\LaravelAuditing\Tests\Models\User;
 use Illuminate\Support\Facades\App;
@@ -320,7 +321,7 @@ class AuditingTest extends AuditingTestCase
     public function itWillNotAuditDueToClassWithoutDriverInterface()
     {
         // We just pass a FQCN that does not implement the AuditDriver interface
-        $this->app['config']->set('laravel-auditing.driver', self::class);
+        $this->app['config']->set('laravel-auditing.driver', FakeDriver::class);
 
         $this->expectException(AuditingException::class);
         $this->expectExceptionMessage('The driver must implement the AuditDriver contract');

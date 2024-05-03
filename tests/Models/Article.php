@@ -22,6 +22,7 @@ class Article extends Model implements Auditable
      */
     protected $casts = [
         'reviewed' => 'bool',
+        'published_at' => 'datetime',
     ];
 
     /**
