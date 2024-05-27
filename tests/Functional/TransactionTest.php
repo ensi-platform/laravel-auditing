@@ -2,88 +2,87 @@
 
 namespace Ensi\LaravelAuditing\Tests\Functional;
 
-use Ensi\LaravelAuditing\Database\Factories\ArticleFactory;
 use Ensi\LaravelAuditing\Facades\Transaction;
-use Ensi\LaravelAuditing\Tests\AuditingTestCase;
+use Ensi\LaravelAuditing\Tests\Data\Models\Factories\ArticleFactory;
+use Ensi\LaravelAuditing\Tests\TestCase;
 use Illuminate\Support\Facades\DB;
+
+use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertFalse;
+use function PHPUnit\Framework\assertNotEquals;
+use function PHPUnit\Framework\assertNull;
+use function PHPUnit\Framework\assertSame;
+use function PHPUnit\Framework\assertTrue;
+
 use RuntimeException;
 
-class TransactionTest extends AuditingTestCase
-{
-    /**
-     * @test
-     */
-    public function itHandlesBeginTransaction(): void
-    {
-        $uidBefore = Transaction::uid();
-        DB::transaction(function () use ($uidBefore) {
-            $this->assertTrue(Transaction::isActive());
-            $this->assertNotEquals($uidBefore, Transaction::uid());
-            $this->assertEquals(Transaction::uid(), Transaction::uid());
-        });
-    }
+uses(TestCase::class);
 
-    /**
-     * @test
-     */
-    public function itHandlesCommit(): void
-    {
-        $uid = DB::transaction(function () {
-            return Transaction::uid();
-        });
+test('it handles begin transaction', function () {
+    /** @var TestCase $this */
 
-        $this->assertNotEquals($uid, Transaction::uid());
-        $this->assertFalse(Transaction::isActive());
-    }
+    $uidBefore = Transaction::uid();
+    DB::transaction(function () use ($uidBefore) {
+        assertTrue(Transaction::isActive());
+        assertNotEquals($uidBefore, Transaction::uid());
+        assertEquals(Transaction::uid(), Transaction::uid());
+    });
+});
 
-    /**
-     * @test
-     */
-    public function itHandlesRollback(): void
-    {
-        $uid = null;
+test('it handles commit', function () {
+    /** @var TestCase $this */
 
-        try {
-            DB::transaction(function () use (&$uid) {
-                $uid = Transaction::uid();
+    $uid = DB::transaction(function () {
+        return Transaction::uid();
+    });
 
-                throw new RuntimeException('Failed');
-            });
-        } catch (RuntimeException) {
-        }
+    assertNotEquals($uid, Transaction::uid());
+    assertFalse(Transaction::isActive());
+});
 
-        $this->assertNotEquals($uid, Transaction::uid());
-        $this->assertFalse(Transaction::isActive());
-    }
+test('it handles rollback', function () {
+    /** @var TestCase $this */
 
-    /**
-     * @test
-     */
-    public function itIgnoresNestedSavePoints(): void
-    {
-        DB::transaction(function () {
+    $uid = null;
+
+    try {
+        DB::transaction(function () use (&$uid) {
             $uid = Transaction::uid();
-            $timestamp = Transaction::timestamp();
 
-            DB::transaction(function () use ($uid, $timestamp) {
-                $this->assertEquals($uid, Transaction::uid());
-                $this->assertEquals($timestamp, Transaction::timestamp());
-            });
+            throw new RuntimeException('Failed');
         });
+    } catch (RuntimeException) {
     }
 
-    /**
-     * @test
-     */
-    public function itRemembersRootEntity(): void
-    {
-        DB::transaction(function () {
-            $article = ArticleFactory::new()->create();
-            Transaction::setRootEntity($article);
+    assertNotEquals($uid, Transaction::uid());
+    assertFalse(Transaction::isActive());
+});
 
-            $this->assertSame($article, Transaction::rootEntity());
+
+test('it ignores nested save points', function () {
+    /** @var TestCase $this */
+
+    DB::transaction(function () {
+        $uid = Transaction::uid();
+        $timestamp = Transaction::timestamp();
+
+        DB::transaction(function () use ($uid, $timestamp) {
+            assertEquals($uid, Transaction::uid());
+            assertEquals($timestamp, Transaction::timestamp());
         });
+    });
+});
 
-        $this->assertNull(Transaction::rootEntity());
-    }
-}
+
+test('it remembers root entity', function () {
+    /** @var TestCase $this */
+
+    DB::transaction(function () {
+        $article = ArticleFactory::new()->create();
+        Transaction::setRootEntity($article);
+
+        assertSame($article, Transaction::rootEntity());
+    });
+
+    assertNull(Transaction::rootEntity());
+});

@@ -2,16 +2,19 @@
 
 namespace Ensi\LaravelAuditing\Contracts;
 
+use Ensi\LaravelAuditing\Exceptions\AuditableTransitionException;
+use Ensi\LaravelAuditing\Exceptions\AuditingException;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Query\Builder;
 
 interface Auditable
 {
     /**
      * Auditable Model audits.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     * @return MorphMany|Builder
      */
-    public function audits(): MorphMany;
+    public function audits(): MorphMany|Builder;
 
     /**
      * Set the Audit event.
@@ -46,7 +49,7 @@ interface Auditable
     /**
      * Return data for an Audit.
      *
-     * @throws \Ensi\LaravelAuditing\Exceptions\AuditingException
+     * @throws AuditingException
      *
      * @return array
      */
@@ -130,7 +133,7 @@ interface Auditable
      * @param Audit $audit
      * @param bool  $old
      *
-     * @throws \Ensi\LaravelAuditing\Exceptions\AuditableTransitionException
+     * @throws AuditableTransitionException
      *
      * @return Auditable
      */

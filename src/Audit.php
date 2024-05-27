@@ -71,22 +71,22 @@ trait Audit
     {
         // Metadata
         $this->data = [
-            'audit_id'          => $this->id,
-            'audit_event'       => $this->event,
-            'audit_url'         => $this->url,
-            'audit_ip_address'  => $this->ip_address,
-            'audit_user_agent'  => $this->user_agent,
-            'audit_tags'        => $this->tags,
-            'audit_created_at'  => $this->serializeDate($this->created_at),
-            'audit_updated_at'  => $this->serializeDate($this->updated_at),
-            'root_entity_id'    => $this->getAttribute('root_entity_type'),
-            'root_entity_type'  => $this->getAttribute('root_entity_id'),
-            'subject_id'        => $this->getAttribute('subject_id'),
-            'subject_type'      => $this->getAttribute('subject_type'),
-            'transaction_uid'   => $this->getAttribute('transaction_uid'),
-            'transaction_time'  => $this->serializeDate($this->transaction_time ?? now()),
-            'user_id'           => $this->user_id,
-            'extra'             => $this->extra,
+            'audit_id' => $this->id,
+            'audit_event' => $this->event,
+            'audit_url' => $this->url,
+            'audit_ip_address' => $this->ip_address,
+            'audit_user_agent' => $this->user_agent,
+            'audit_tags' => $this->tags,
+            'audit_created_at' => $this->serializeDate($this->created_at),
+            'audit_updated_at' => $this->serializeDate($this->updated_at),
+            'root_entity_id' => $this->getAttribute('root_entity_type'),
+            'root_entity_type' => $this->getAttribute('root_entity_id'),
+            'subject_id' => $this->getAttribute('subject_id'),
+            'subject_type' => $this->getAttribute('subject_type'),
+            'transaction_uid' => $this->getAttribute('transaction_uid'),
+            'transaction_time' => $this->serializeDate($this->transaction_time ?? now()),
+            'user_id' => $this->user_id,
+            'extra' => $this->extra,
         ];
 
         if ($this->subject && ($this->subject instanceof Principal)) {
@@ -101,11 +101,11 @@ trait Audit
 
         // Modified Auditable attributes
         foreach ($this->new_values as $key => $value) {
-            $this->data['new_'.$key] = $value;
+            $this->data['new_' . $key] = $value;
         }
 
         foreach ($this->old_values as $key => $value) {
-            $this->data['old_'.$key] = $value;
+            $this->data['old_' . $key] = $value;
         }
 
         $this->modified = array_diff_key(array_keys($this->data), $this->metadata);
@@ -252,6 +252,6 @@ trait Audit
      */
     public function getTags(): array
     {
-        return preg_split('/,/', $this->tags, null, PREG_SPLIT_NO_EMPTY);
+        return preg_split('/,/', $this->tags, flags: PREG_SPLIT_NO_EMPTY);
     }
 }

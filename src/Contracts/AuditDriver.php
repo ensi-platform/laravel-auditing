@@ -7,16 +7,16 @@ interface AuditDriver
     /**
      * Perform an audit.
      *
-     * @param \Ensi\LaravelAuditing\Contracts\Auditable $model
+     * @param Auditable $model
      *
-     * @return \Ensi\LaravelAuditing\Contracts\Audit
+     * @return Audit
      */
     public function audit(Auditable $model): Audit;
 
     /**
      * Remove older audits that go over the threshold.
      *
-     * @param \Ensi\LaravelAuditing\Contracts\Auditable $model
+     * @param Auditable $model
      *
      * @return bool
      */

@@ -1,34 +1,26 @@
 <?php
 
-namespace Ensi\LaravelAuditing\Tests\Functional;
-
-use Ensi\LaravelAuditing\Tests\AuditingTestCase;
+use Ensi\LaravelAuditing\Console\AuditDriverCommand;
+use Ensi\LaravelAuditing\Tests\TestCase;
 use Illuminate\Testing\PendingCommand;
 
-class CommandTest extends AuditingTestCase
-{
-    /**
-     * @test
-     */
-    public function itWillGenerateTheAuditDriver()
-    {
-        $driverFilePath = sprintf(
-            '%s/AuditDrivers/TestDriver.php',
-            $this->app->path()
-        );
+use function Pest\Laravel\artisan;
+use function PHPUnit\Framework\assertFileExists;
+use function PHPUnit\Framework\assertInstanceOf;
+use function PHPUnit\Framework\assertTrue;
 
-        $this->assertInstanceOf(
-            PendingCommand::class,
-            $this->artisan(
-                'auditing:audit-driver',
-                [
-                    'name' => 'TestDriver',
-                ]
-            )
-        );
+uses(TestCase::class);
 
-        $this->assertFileExists($driverFilePath);
+test('generate the audit driver success', function () {
+    /** @var TestCase $this */
 
-        $this->assertTrue(unlink($driverFilePath));
-    }
-}
+    assertInstanceOf(
+        PendingCommand::class,
+        artisan(AuditDriverCommand::class, ['name' => 'TestDriver'])
+    );
+
+    $driverFilePath = app_path('AuditDrivers/TestDriver.php');
+
+    assertFileExists($driverFilePath);
+    assertTrue(unlink($driverFilePath));
+});

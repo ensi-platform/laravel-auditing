@@ -2,118 +2,85 @@
 
 namespace Ensi\LaravelAuditing\Tests\Unit;
 
-use Ensi\LaravelAuditing\Tests\AuditingTestCase;
-use Ensi\LaravelAuditing\Transactions\TransactionRegistry;
-use Illuminate\Database\Connection;
+use Ensi\LaravelAuditing\Tests\Unit\TestCases\TransactionRegistryTestCase;
 use Illuminate\Database\Events\TransactionBeginning;
 use Illuminate\Database\Events\TransactionCommitted;
 use Illuminate\Database\Events\TransactionRolledBack;
-use Mockery;
 
-class TransactionRegistryTest extends AuditingTestCase
-{
-    const DEFAULT_CONNECTION_NAME = 'default';
+use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertFalse;
+use function PHPUnit\Framework\assertNotSame;
+use function PHPUnit\Framework\assertSame;
+use function PHPUnit\Framework\assertTrue;
 
-    private $mockConnection;
-    private $testing;
+uses(TransactionRegistryTestCase::class);
 
-    public function setUp(): void
-    {
-        parent::setUp();
+test('it remembers attributes for connection', function () {
+    /** @var TransactionRegistryTestCase $this */
 
-        $this->mockConnection = $this->mockConnection(self::DEFAULT_CONNECTION_NAME);
-        $this->testing = new TransactionRegistry(self::DEFAULT_CONNECTION_NAME);
-    }
+    assertSame($this->testing->attributes(), $this->testing->attributes());
+    assertNotSame($this->testing->attributes(), $this->testing->attributes('other'));
+});
 
-    /**
-     * @test
-     */
-    public function itRemembersAttributesForConnection(): void
-    {
-        $this->assertSame($this->testing->attributes(), $this->testing->attributes());
-        $this->assertNotSame($this->testing->attributes(), $this->testing->attributes('other'));
-    }
+test('it processes begin transaction', function () {
+    /** @var TransactionRegistryTestCase $this */
 
-    /**
-     * @test
-     */
-    public function itProcessesBeginTransaction(): void
-    {
-        $this->testing->onBegin(new TransactionBeginning($this->mockConnection));
+    $this->testing->onBegin(new TransactionBeginning($this->mockConnection));
 
-        $this->assertTrue($this->testing->attributes()->isActive());
-    }
+    assertTrue($this->testing->attributes()->isActive());
+});
 
-    /**
-     * @test
-     */
-    public function itIgnoresBegunTransaction(): void
-    {
-        $this->testing->onBegin(new TransactionBeginning($this->mockConnection));
-        $uid = $this->testing->uid();
+test('it ignores begun transaction', function () {
+    /** @var TransactionRegistryTestCase $this */
 
-        $this->testing->onBegin(new TransactionBeginning($this->mockConnection));
+    $this->testing->onBegin(new TransactionBeginning($this->mockConnection));
+    $uid = $this->testing->uid();
 
-        $this->assertEquals($uid, $this->testing->uid());
-    }
+    $this->testing->onBegin(new TransactionBeginning($this->mockConnection));
 
-    /**
-     * @test
-     */
-    public function itProcessesCommitTransaction(): void
-    {
-        $this->testing->onBegin(new TransactionBeginning($this->mockConnection));
-        $this->mockConnection->shouldReceive('transactionLevel')->andReturn(0);
+    assertEquals($uid, $this->testing->uid());
+});
 
-        $this->testing->onCommit(new TransactionCommitted($this->mockConnection));
+test('it processes commit transaction', function () {
+    /** @var TransactionRegistryTestCase $this */
 
-        $this->assertFalse($this->testing->attributes()->isActive());
-    }
+    $this->testing->onBegin(new TransactionBeginning($this->mockConnection));
+    $this->mockConnection->shouldReceive('transactionLevel')->andReturn(0);
 
-    /**
-     * @test
-     */
-    public function itIgnoresCommitSavePoint(): void
-    {
-        $this->testing->onBegin(new TransactionBeginning($this->mockConnection));
-        $this->mockConnection->shouldReceive('transactionLevel')->andReturn(1);
+    $this->testing->onCommit(new TransactionCommitted($this->mockConnection));
 
-        $this->testing->onCommit(new TransactionCommitted($this->mockConnection));
+    assertFalse($this->testing->attributes()->isActive());
+});
 
-        $this->assertTrue($this->testing->attributes()->isActive());
-    }
+test('it ignores commit save point', function () {
+    /** @var TransactionRegistryTestCase $this */
 
-    /**
-     * @test
-     */
-    public function itProcessesRollbackTransaction(): void
-    {
-        $this->testing->onBegin(new TransactionBeginning($this->mockConnection));
-        $this->mockConnection->shouldReceive('transactionLevel')->andReturn(0);
+    $this->testing->onBegin(new TransactionBeginning($this->mockConnection));
+    $this->mockConnection->shouldReceive('transactionLevel')->andReturn(1);
 
-        $this->testing->onRollback(new TransactionRolledBack($this->mockConnection));
+    $this->testing->onCommit(new TransactionCommitted($this->mockConnection));
 
-        $this->assertFalse($this->testing->attributes()->isActive());
-    }
+    assertTrue($this->testing->attributes()->isActive());
+});
 
-    /**
-     * @test
-     */
-    public function itIgnoresRollbackSavePoint(): void
-    {
-        $this->testing->onBegin(new TransactionBeginning($this->mockConnection));
-        $this->mockConnection->shouldReceive('transactionLevel')->andReturn(1);
+test('it processes rollback transaction', function () {
+    /** @var TransactionRegistryTestCase $this */
 
-        $this->testing->onRollback(new TransactionRolledBack($this->mockConnection));
+    $this->testing->onBegin(new TransactionBeginning($this->mockConnection));
+    $this->mockConnection->shouldReceive('transactionLevel')->andReturn(0);
 
-        $this->assertTrue($this->testing->attributes()->isActive());
-    }
+    $this->testing->onRollback(new TransactionRolledBack($this->mockConnection));
 
-    private function mockConnection(string $name): Mockery\MockInterface|Connection
-    {
-        $mockConnection = Mockery::mock(Connection::class);
-        $mockConnection->shouldReceive('getName')->andReturn($name);
+    assertFalse($this->testing->attributes()->isActive());
+});
 
-        return $mockConnection;
-    }
-}
+test('it ignores rollback save point', function () {
+    /** @var TransactionRegistryTestCase $this */
+
+    $this->testing->onBegin(new TransactionBeginning($this->mockConnection));
+    $this->mockConnection->shouldReceive('transactionLevel')->andReturn(1);
+
+    $this->testing->onRollback(new TransactionRolledBack($this->mockConnection));
+
+    assertTrue($this->testing->attributes()->isActive());
+});

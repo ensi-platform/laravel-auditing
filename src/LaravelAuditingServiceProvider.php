@@ -3,7 +3,6 @@
 namespace Ensi\LaravelAuditing;
 
 use Ensi\LaravelAuditing\Console\AuditDriverCommand;
-use Ensi\LaravelAuditing\Console\InstallCommand;
 use Ensi\LaravelAuditing\Contracts\Auditor;
 use Ensi\LaravelAuditing\Drivers\Database;
 use Ensi\LaravelAuditing\Facades\Subject;
@@ -19,69 +18,53 @@ use Illuminate\Support\ServiceProvider;
 
 class LaravelAuditingServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap the service provider.
-     *
-     * @return void
-     */
-    public function boot()
+    public function register(): void
     {
-        $this->registerPublishing();
-        $this->registerListeners();
+        $this->mergeConfigFrom(__DIR__ . '/../config/laravel-auditing.php', 'laravel-auditing');
 
-        $this->mergeConfigFrom(__DIR__.'/../config/laravel-auditing.php', 'laravel-auditing');
-    }
-
-    /**
-     * Register the service provider.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->commands([
-            AuditDriverCommand::class,
-            InstallCommand::class,
-        ]);
-
-        $this->app->singleton(TransactionRegistry::class, function (Application $app) {
+        $this->app->scoped(TransactionRegistry::class, function (Application $app) {
             return new TransactionRegistry($app['config']['database.default']);
         });
 
-        $this->app->singleton(Database::class, function (Application $app) {
+        $this->app->scoped(Database::class, function (Application $app) {
             return new Database($app->make(TransactionRegistry::class));
         });
 
 
-        $this->app->singleton(Auditor::class, function (Application $app) {
+        $this->app->scoped(Auditor::class, function (Application $app) {
             return new \Ensi\LaravelAuditing\Auditor($app);
         });
 
-        $this->app->singleton(SubjectManager::class);
-        $this->app->singleton(Subject::class);
-        $this->app->singleton(Transaction::class);
+        $this->app->scoped(SubjectManager::class);
+        $this->app->scoped(Subject::class);
+        $this->app->scoped(Transaction::class);
     }
 
-    /**
-     * Register the package's publishable resources.
-     *
-     * @return void
-     */
-    private function registerPublishing()
+    public function boot(): void
+    {
+        $this->registerPublishing();
+        $this->registerListeners();
+
+        $this->commands([
+            AuditDriverCommand::class,
+        ]);
+    }
+
+    private function registerPublishing(): void
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/laravel-auditing.php' => base_path('config/laravel-auditing.php'),
+                __DIR__ . '/../config/laravel-auditing.php' => base_path('config/laravel-auditing.php'),
             ], 'config');
 
             $this->publishes([
-                __DIR__.'/../database/migrations/audits.stub' => database_path(
+                __DIR__ . '/../database/migrations/audits.stub' => database_path(
                     sprintf('migrations/%s_create_audits_table.php', date('Y_m_d_His'))
                 ),
             ], 'migrations');
 
             $this->publishes([
-                __DIR__.'/../database/migrations/audits_extra.stub' => database_path(
+                __DIR__ . '/../database/migrations/audits_extra.stub' => database_path(
                     sprintf('migrations/%s_push_audits_extra.php', date('Y_m_d_His'))
                 ),
             ], 'migrations-0.3');
