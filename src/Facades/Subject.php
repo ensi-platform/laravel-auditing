@@ -2,7 +2,6 @@
 
 namespace Ensi\LaravelAuditing\Facades;
 
-use Ensi\LaravelAuditing\Contracts\Principal;
 use Ensi\LaravelAuditing\Resolvers\SubjectManager;
 use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\Optional;
@@ -18,9 +17,6 @@ class Subject extends Facade
         return SubjectManager::class;
     }
 
-    /**
-     * @return Optional|Principal
-     */
     public static function resolve(): Optional
     {
         return static::getFacadeRoot()->current();

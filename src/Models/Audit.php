@@ -2,6 +2,9 @@
 
 namespace Ensi\LaravelAuditing\Models;
 
+use Carbon\CarbonInterface;
+use Ensi\LaravelAuditing\Contracts\Auditable;
+use Ensi\LaravelAuditing\Contracts\Principal;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,25 +20,25 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $tags
  *
  * @property string $auditable_type
- * @property int $auditable_id          Измененная сущность
+ * @property int $auditable_id Измененная сущность
  * @property string $root_entity_type
- * @property int $root_entity_id        Корневая сущность
+ * @property int $root_entity_id Корневая сущность
  * @property string $subject_type
- * @property int $subject_id            Субъект доступа
- * @property string|null $user_id       Идентификатор пользователя
- * @property array|null $extra          Дополнительная информация
+ * @property int $subject_id Субъект доступа
+ * @property string|null $user_id Идентификатор пользователя
+ * @property array|null $extra Дополнительная информация
  *
- * @property \Carbon\CarbonInterface $created_at
- * @property \Carbon\CarbonInterface $updated_at
+ * @property CarbonInterface $created_at
+ * @property CarbonInterface $updated_at
  * @property string $transaction_uid
- * @property \Carbon\CarbonInterface $transaction_time
+ * @property CarbonInterface $transaction_time
  *
- * @property \Illuminate\Database\Eloquent\Model|\Ensi\LaravelAuditing\Contracts\Principal|null $subject
- * @property \Illuminate\Database\Eloquent\Model|\Ensi\LaravelAuditing\Contracts\Auditable $auditable
- * @property \Illuminate\Database\Eloquent\Model|null $root
+ * @property Model|Principal|null $subject
+ * @property Model|Auditable|null $auditable
+ * @property Model|null $root
  *
  * @method static static create(array $attributes)
- * @method static \Illuminate\Database\Eloquent\Builder|static forRoot(\Illuminate\Database\Eloquent\Model $root)
+ * @method static Builder|static forRoot(Model $root)
  */
 class Audit extends Model implements \Ensi\LaravelAuditing\Contracts\Audit
 {
@@ -50,12 +53,12 @@ class Audit extends Model implements \Ensi\LaravelAuditing\Contracts\Audit
      * {@inheritdoc}
      */
     protected $casts = [
-        'old_values'   => 'json',
-        'new_values'   => 'json',
+        'old_values' => 'json',
+        'new_values' => 'json',
         // Note: Please do not add 'auditable_id' in here, as it will break non-integer PK models
-        'state'        => 'json',
-        'extra'        => 'json',
-        'subject_id'   => 'int',
+        'state' => 'json',
+        'extra' => 'json',
+        'subject_id' => 'int',
     ];
 
     protected $dates = ['transaction_time'];

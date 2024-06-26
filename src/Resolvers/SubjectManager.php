@@ -7,12 +7,8 @@ use Illuminate\Support\Optional;
 
 class SubjectManager
 {
-    /** @var Principal|null */
-    private $principal;
+    private ?Principal $principal = null;
 
-    /**
-     * @return Optional|Principal
-     */
     public function current(): Optional
     {
         return new Optional($this->principal);

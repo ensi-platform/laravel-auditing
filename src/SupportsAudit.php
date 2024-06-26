@@ -14,6 +14,7 @@ use Ensi\LaravelAuditing\Exceptions\AuditingException;
 use Ensi\LaravelAuditing\Facades\Subject;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
@@ -56,7 +57,7 @@ trait SupportsAudit
     /**
      * {@inheritdoc}
      */
-    public function audits(): MorphMany
+    public function audits(): MorphMany|Builder
     {
         return $this->morphMany(
             Config::get('laravel-auditing.implementation', Models\Audit::class),
@@ -295,20 +296,20 @@ trait SupportsAudit
         $subject = $this->resolveSubject();
 
         return $this->transformAudit([
-            'old_values'         => $old,
-            'new_values'         => $new,
-            'state'              => $state,
-            'event'              => $this->auditEvent,
-            'auditable_id'       => $this->getKey(),
-            'auditable_type'     => $this->getMorphClass(),
-            'subject_id'         => $subject?->getAuthIdentifier(),
-            'subject_type'       => $subject?->getMorphClass(),
-            'url'                => $this->resolveUrl(),
-            'ip_address'         => $this->resolveIpAddress(),
-            'user_agent'         => $this->resolveUserAgent(),
-            'user_id'            => $this->resolveUser(),
-            'tags'               => empty($tags) ? null : $tags,
-            'extra'              => $this->getAuditExtra(),
+            'old_values' => $old,
+            'new_values' => $new,
+            'state' => $state,
+            'event' => $this->auditEvent,
+            'auditable_id' => $this->getKey(),
+            'auditable_type' => $this->getMorphClass(),
+            'subject_id' => $subject?->getAuthIdentifier(),
+            'subject_type' => $subject?->getMorphClass(),
+            'url' => $this->resolveUrl(),
+            'ip_address' => $this->resolveIpAddress(),
+            'user_agent' => $this->resolveUserAgent(),
+            'user_id' => $this->resolveUser(),
+            'tags' => empty($tags) ? null : $tags,
+            'extra' => $this->getAuditExtra(),
         ]);
     }
 

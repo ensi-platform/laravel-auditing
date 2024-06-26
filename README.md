@@ -1,17 +1,45 @@
 # Laravel Auditing
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/ensi/laravel-auditing.svg?style=flat-square)](https://packagist.org/packages/ensi/laravel-auditing)
+[![Tests](https://github.com/ensi-platform/laravel-auditing/actions/workflows/run-tests.yml/badge.svg?branch=master)](https://github.com/ensi-platform/laravel-auditing/actions/workflows/run-tests.yml)
+[![Total Downloads](https://img.shields.io/packagist/dt/ensi/laravel-auditing.svg?style=flat-square)](https://packagist.org/packages/ensi/laravel-auditing)
+
 Opiniated fork of [owen-it/laravel-auditing](https://github.com/owen-it/laravel-auditing)
 
-## Установка
+## Installation
 
-1. `composer require ensi/laravel-auditing`
-2. `php artisan vendor:publish --provider="Ensi\LaravelAuditing\LaravelAuditingServiceProvider"`
-3. Добавьте в `config/app` класс провайдера `Ensi\LaravelAuditing\LaravelAuditingServiceProvider::class`
+You can install the package via composer:
 
-## Использование
+```bash
+composer require ensi/laravel-auditing
+```
 
-По-умолчанию никакая история изменения для моделей не сохраняется.
-Чтобы включить логирование для конкретной модели надо добавить ей трейт `SupportsAudit` и интерфейс `Auditable`
+Publish the migrations with:
+
+```bash
+php artisan vendor:publish --provider="Ensi\LaravelAuditing\LaravelAuditingServiceProvider"
+```
+
+### Migrate from 0.2.x to 0.3.0
+
+1. Publish new migration `php artisan vendor:publish --provider="Ensi\LaravelAuditing\LaravelAuditingServiceProvider" --tag=migrations-0.3`
+2. If the config `laravel-auditing.php` is published, then replace the `resolver.user`value with `Ensi\LaravelAuditing\Resolvers\UserResolver::class`
+
+## Version Compatibility
+
+| Laravel Auditing | Laravel                              | PHP  |
+|------------------|--------------------------------------|------|
+| ^0.1.2           | ^7.x \|\| ^8.x                       | ^8.0 |
+| ^0.2.0           | ^7.x \|\| ^8.x                       | ^8.0 |
+| ^0.3.0           | ^7.x \|\| ^8.x                       | ^8.0 |
+| ^0.3.1           | ^8.x \|\| ^9.x                       | ^8.0 |
+| ^0.3.5           | ^8.x \|\| ^9.x \|\| ^10.x \|\| ^11.x | ^8.0 |
+| ^0.4.0           | ^9.x \|\| ^10.x \|\| ^11.x           | ^8.1 |
+
+## Basic Usage
+
+By default, no modification history is saved for models.
+To enable logging for a specific model, you need to add the `Support s Audit` trait and the `Auditable` interface to it
 
 ```php
 use Ensi\LaravelAuditing\Contracts\Auditable;
@@ -23,8 +51,8 @@ class Something extends Model implements Auditable {
 
 ```
 
-В случае, если мы меняем данные дочерних с логической точки зрения моделей и хотим чтобы в истории это изменение проходило под родительской моделью, необходимо в транзакции до изменения данных задать корневую сущность (т.е модель).
-Делается это через фасад `Transaction` или менеджер `\\Ensi\\LaravelAuditing\\Transactions\\ExtendedTransactionManager` 
+If we change the data of the child models from a logical point of view and want this change to take place under the parent model in the history, it is necessary to set the root entity (i.e. the model) in the transaction before changing the data.
+This is done through the `Transaction` facade or the manager `\\Ensi\\LaravelAuditing\\Transactions\\ExtendedTransactionManager`
 
 ```php
 DB::transaction(function () {
@@ -34,35 +62,37 @@ DB::transaction(function () {
 });
 ```
 
-Для добавления в историю данных о том кто произвел изменения (конкретный пользователь, или, например, консольная команда) опять же нужно это сделать до изменения данных, но уже через фасад `Subject` или инъекцию `\\Ensi\\LaravelAuditing\\Resolvers\\SubjectManager`
+To add data to the history about who made the changes (a specific user, or, for example, a console command), again, you need to do this before changing the data, but through the `Subject` facade or the injection of `\\Ensi\\LaravelAuditing\\Resolvers\\SubjectManager`
 
 ```php
 Subject::attach($subject); // $subject - объект реализующий Ensi\LaravelAuditing\Contracts
 ```
 
-Субъект не отвязывается после завершения транзакции. 
-Его можно отвязать вручную вызовом метода `Subject::detach()`.
+The subject does not unbind after the transaction is completed.
+It can be unlinked manually by calling the `Subject::detach()` method.
 
-При обработке http запросов, можно задавать субъекта в middleware. В консольных командах и
-обработчиках очереди событий переназначать в процессе выполнения.
+When processing http requests, you can set the subject in middleware. In console commands and handlers, event queues are reassigned during execution.
 
-Субъектом может являться любая сущность, поддерживающая интерфейс `\Ensi\LaravelAuditing\Contracts\Principal`.
-Если субъектом является выполняемое задание, например, импорт из файла, то оно может возвращать идентификатор
-пользователя, создавшего задание в методе `getUserIdentifier()`, а в качестве наименования возвращать имя
-импортируемого файла.
+The subject can be any entity that supports the interface `\Ensi\LaravelAuditing\Contracts\Principal`.
+If the subject is an ongoing task, for example, importing from a file, then it can return the ID of the user who created the task in the `getUserIdentifier()` method, and return the name of the imported file as the name.
 
-В модели пользователя методы `getAuthIdentifier()` и `getUserIdentifier()` возвращают один и тот же идентификатор.
+In the user model, the `getAuthIdentifier()` and `getUserIdentifier()` methods return the same identifier.
 
-Также в отличии от исходного пакета в истории сохраняются не только измененные поля, но и полное состояние объекта модели на момент изменения.
+Also, unlike the original package, not only the changed fields are saved in the history, but also the complete state of the model object at the time of the change.
 
 ## Contributing
+
+Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
 
 ### Testing
 
 1. composer install
-2. npm i
-3. composer test
+2. composer test
 
-## Лицензия
+## Security Vulnerabilities
 
-[The MIT License (MIT)](LICENSE.md).
+Please review [our security policy](.github/SECURITY.md) on how to report security vulnerabilities.
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
