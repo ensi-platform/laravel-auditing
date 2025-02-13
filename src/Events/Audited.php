@@ -36,7 +36,7 @@ class Audited
      * @param \Ensi\LaravelAuditing\Contracts\AuditDriver $driver
      * @param \Ensi\LaravelAuditing\Contracts\Audit       $audit
      */
-    public function __construct(Auditable $model, AuditDriver $driver, Audit $audit = null)
+    public function __construct(Auditable $model, AuditDriver $driver, ?Audit $audit = null)
     {
         $this->model = $model;
         $this->driver = $driver;
