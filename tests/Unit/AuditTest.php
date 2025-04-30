@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use DateTimeInterface;
 use Ensi\LaravelAuditing\Encoders\Base64Encoder;
 use Ensi\LaravelAuditing\Facades\Subject;
+use Ensi\LaravelAuditing\Facades\Transaction;
 use Ensi\LaravelAuditing\Models\Audit;
 use Ensi\LaravelAuditing\Redactors\LeftRedactor;
 use Ensi\LaravelAuditing\Tests\Data\Models\Article;
@@ -13,6 +14,7 @@ use Ensi\LaravelAuditing\Tests\Data\Models\Factories\AuditFactory;
 use Ensi\LaravelAuditing\Tests\Data\Models\User;
 use Ensi\LaravelAuditing\Tests\Data\Models\VirtualUser;
 use Ensi\LaravelAuditing\Tests\TestCase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Testing\Assert;
 
 use function PHPUnit\Framework\assertCount;
@@ -96,6 +98,35 @@ test('it resolves audit data including subject attributes', function () {
         'new_reviewed' => 1,
         'subject_id' => $user->getKey(),
     ], $resolvedData, true);
+});
+
+test('it resolves audit data including root entity', function () {
+    $user = User::factory()->create();
+
+    /** @var Article $article */
+    $article = Article::factory()->create(['title' => 'title']);
+
+    DB::transaction(function() use ($article, $user) {
+        Transaction::setRootEntity($user);
+        $article->update(['title' => 'new title']);
+    });
+
+    $audit = $article->audits()->latest()->first();
+
+    Assert::assertArraySubset([
+        'audit_id' => 3,
+        'audit_event' => 'updated',
+        'audit_url' => 'console',
+        'audit_ip_address' => '127.0.0.1',
+        'audit_user_agent' => 'Symfony',
+        'audit_tags' => null,
+        'audit_created_at' => $audit->created_at->toJSON(),
+        'audit_updated_at' => $audit->updated_at->toJSON(),
+        'old_title' => 'title',
+        'new_title' => 'new title',
+        "root_entity_id" => $user->id,
+        "root_entity_type" => User::class,
+    ], $audit->resolveData(), true);
 });
 
 test('it resolves audit data including user id', function () {

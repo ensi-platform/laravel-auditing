@@ -65,7 +65,7 @@ DB::transaction(function () {
 To add data to the history about who made the changes (a specific user, or, for example, a console command), again, you need to do this before changing the data, but through the `Subject` facade or the injection of `\\Ensi\\LaravelAuditing\\Resolvers\\SubjectManager`
 
 ```php
-Subject::attach($subject); // $subject - объект реализующий Ensi\LaravelAuditing\Contracts
+Subject::attach($subject); // $subject - an object implementing Ensi\LaravelAuditing\Contracts
 ```
 
 The subject does not unbind after the transaction is completed.
