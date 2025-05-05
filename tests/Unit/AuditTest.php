@@ -106,7 +106,7 @@ test('it resolves audit data including root entity', function () {
     /** @var Article $article */
     $article = Article::factory()->create(['title' => 'title']);
 
-    DB::transaction(function() use ($article, $user) {
+    DB::transaction(function () use ($article, $user) {
         Transaction::setRootEntity($user);
         $article->update(['title' => 'new title']);
     });
