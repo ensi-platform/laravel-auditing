@@ -85,8 +85,14 @@ class LaravelAuditingServiceProvider extends ServiceProvider
 
     private function registerListeners(): void
     {
-        Event::listen(TransactionBeginning::class, [TransactionRegistry::class, 'onBegin']);
-        Event::listen(TransactionCommitted::class, [TransactionRegistry::class, 'onCommit']);
-        Event::listen(TransactionRolledBack::class, [TransactionRegistry::class, 'onRollback']);
+        Event::listen(TransactionBeginning::class, function (TransactionBeginning $event) {
+            app(TransactionRegistry::class)->onBegin($event);
+        });
+        Event::listen(TransactionCommitted::class, function (TransactionCommitted $event) {
+            app(TransactionRegistry::class)->onCommit($event);
+        });
+        Event::listen(TransactionRolledBack::class, function (TransactionRolledBack $event) {
+            app(TransactionRegistry::class)->onRollback($event);
+        });
     }
 }

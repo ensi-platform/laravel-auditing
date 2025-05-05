@@ -59,9 +59,8 @@ class Audit extends Model implements \Ensi\LaravelAuditing\Contracts\Audit
         'state' => 'json',
         'extra' => 'json',
         'subject_id' => 'int',
+        'transaction_time' => 'datetime',
     ];
-
-    protected $dates = ['transaction_time'];
 
     /** @var string Формат дат для БД с точностью до микросекунд */
     protected $dateFormat = 'Y-m-d H:i:s.u';
