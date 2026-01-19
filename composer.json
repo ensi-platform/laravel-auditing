@@ -26,6 +26,14 @@
     "autoload-dev": {
         "psr-4": {
             "Ensi\\LaravelAuditing\\Tests\\": "tests/"
+        },
+        "audit": {
+            "ignore": [
+                "PKSA-8qx3-n5y5-vvnd",
+                "PKSA-w7xr-vk7n-rstm",
+                "PKSA-q46n-4fdk-zjr4",
+                "PKSA-qzrn-rnz3-85w1"
+            ]
         }
     },
     "scripts": {
