@@ -413,3 +413,71 @@ test('it adds root entity to audit', function () {
         assertEquals($article->getMorphClass(), $audit->root_entity_type);
     });
 });
+
+test('it will audit models when values are empty', function () {
+    /** @var TestCase $this */
+
+    $model = Article::factory()->create([
+        'reviewed' => 0,
+    ]);
+
+    $model->reviewed = 1;
+    $model->save();
+
+    assertSame(1, Article::count());
+    assertSame(2, Audit::count());
+});
+
+test('it will not audit models when values are empty', function () {
+    /** @var TestCase $this */
+
+    $this->app['config']->set('laravel-auditing.empty_values', false);
+
+    $article = Article::factory()->create();
+
+    $article->auditExclude = [
+        'title',
+    ];
+
+    $article->title = '1';
+    $article->save();
+
+    assertSame(1, Article::count());
+    assertSame(1, Audit::count());
+});
+
+test('it will audit retrieved event even if audit empty is disabled', function () {
+    /** @var TestCase $this */
+
+    $this->app['config']->set('laravel-auditing.empty_values', false);
+    $this->app['config']->set('laravel-auditing.allowed_empty_values', ['retrieved']);
+    $this->app['config']->set('laravel-auditing.events', [
+        'created',
+        'retrieved',
+    ]);
+
+    /** @var Article $model */
+    Article::factory()->create();
+
+    Article::find(1);
+
+    assertSame(2, Audit::count());
+});
+
+test('it will not audit retrieved event if audit empty is disabled and retrieved event of empty values not allowed', function () {
+    /** @var TestCase $this */
+
+    $this->app['config']->set('laravel-auditing.empty_values', false);
+    $this->app['config']->set('laravel-auditing.allowed_empty_values', []);
+    $this->app['config']->set('laravel-auditing.events', [
+        'created',
+        'retrieved',
+    ]);
+
+    /** @var Article $model */
+    Article::factory()->create();
+
+    Article::find(1);
+
+    assertSame(1, Audit::count());
+});

@@ -23,6 +23,8 @@ class Article extends Model implements Auditable
 
     public const AUDIT_META_FIELDS_COUNT = 16;
 
+    public $auditExclude = [];
+
     /**
      * {@inheritdoc}
      */

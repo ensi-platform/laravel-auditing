@@ -8,6 +8,7 @@ use Ensi\LaravelAuditing\Drivers\Database;
 use Ensi\LaravelAuditing\Events\Audited;
 use Ensi\LaravelAuditing\Events\Auditing;
 use Ensi\LaravelAuditing\Exceptions\AuditingException;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Manager;
 use InvalidArgumentException;
 
@@ -66,6 +67,13 @@ class Auditor extends Manager implements Contracts\Auditor
             return;
         }
 
+        if (!$this->isAllowEmptyValues($model)) {
+            $audit = $model->toAudit();
+            if (empty($audit['new_values']) && empty($audit['old_values'])) {
+                return;
+            }
+        }
+
         $audit = $driver->audit($model);
         $driver->prune($model);
 
@@ -97,5 +105,13 @@ class Auditor extends Manager implements Contracts\Auditor
         return $this->container->make('events')->until(
             new Auditing($model, $driver)
         ) !== false;
+    }
+
+    protected function isAllowEmptyValues(Auditable $model): bool
+    {
+        $globalAllowEmpty = (bool)Config::get('laravel-auditing.empty_values', true);
+        $explicitAllowEmpty = in_array($model->getAuditEvent(), Config::get('laravel-auditing.allowed_empty_values', []));
+
+        return $globalAllowEmpty || $explicitAllowEmpty;
     }
 }

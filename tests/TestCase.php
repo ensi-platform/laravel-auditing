@@ -44,6 +44,7 @@ class TestCase extends Orchestra
         $app['config']->set('laravel-auditing.resolver.ip_address', IpAddressResolver::class);
         $app['config']->set('laravel-auditing.resolver.user_agent', UserAgentResolver::class);
         $app['config']->set('laravel-auditing.console', true);
+        $app['config']->set('laravel-auditing.empty_values', true);
     }
 
     protected function setUp(): void
