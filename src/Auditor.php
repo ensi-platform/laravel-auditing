@@ -111,6 +111,7 @@ class Auditor extends Manager implements Contracts\Auditor
     {
         $globalAllowEmpty = (bool)Config::get('laravel-auditing.empty_values', true);
         $explicitAllowEmpty = in_array($model->getAuditEvent(), Config::get('laravel-auditing.allowed_empty_values', []));
+
         return $globalAllowEmpty || $explicitAllowEmpty;
     }
 }
