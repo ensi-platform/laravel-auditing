@@ -67,15 +67,9 @@ class Auditor extends Manager implements Contracts\Auditor
             return;
         }
 
-        // Check if we want to avoid storing empty values
-        $allowEmpty = Config::get('laravel-auditing.empty_values');
-        $explicitAllowEmpty = in_array($model->getAuditEvent(), Config::get('laravel-auditing.allowed_empty_values', []));
-
-        if (!$allowEmpty && !$explicitAllowEmpty) {
-            if (
-                empty($model->toAudit()['new_values']) &&
-                empty($model->toAudit()['old_values'])
-            ) {
+        if (!$this->isAllowEmptyValues($model)) {
+            $audit = $model->toAudit();
+            if (empty($audit['new_values']) && empty($audit['old_values'])) {
                 return;
             }
         }
@@ -111,5 +105,12 @@ class Auditor extends Manager implements Contracts\Auditor
         return $this->container->make('events')->until(
             new Auditing($model, $driver)
         ) !== false;
+    }
+
+    protected function isAllowEmptyValues(Auditable $model): bool
+    {
+        $globalAllowEmpty = (bool)Config::get('laravel-auditing.empty_values', true);
+        $explicitAllowEmpty = in_array($model->getAuditEvent(), Config::get('laravel-auditing.allowed_empty_values', []));
+        return $globalAllowEmpty || $explicitAllowEmpty;
     }
 }
