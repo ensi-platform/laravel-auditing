@@ -18,6 +18,11 @@ parameters:
     ignoreErrors:
         - '#PHPDoc tag @var#'
 
+        # Trait is a public API for package consumers and is used only in tests (not analysed)
+        -
+            identifier: trait.unused
+            path: src/SupportsAudit.php
+
         - '#Unsafe usage of new static\(\)\.#'
 
         # Pest implicitly binds $this to the current test case
