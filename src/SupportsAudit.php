@@ -50,7 +50,7 @@ trait SupportsAudit
     public static function bootSupportsAudit()
     {
         if (!self::$auditingDisabled && static::isAuditingEnabled()) {
-            static::observe(new AuditableObserver());
+            static::whenBooted(fn () => static::observe(new AuditableObserver()));
         }
     }
 
